@@ -19,16 +19,33 @@ Facter.add(:wazuh) do
       end
     end
     
-    def wazuh_agent_version
-      cmd = String.new
-      case Facter.value('osfamily')
-      when 'RedHat'
-        cmd = '/bin/rpm -q wazuh-agent --queryformat "%{VERSION}"'
-      when 'Debian'
-        cmd = '/usr/bin/dpkg-query -W -f="\\${Version}" wazuh-agent'
+    Facter.add('wazuh_agent_version') do
+      setcode do
+        cmd = case Facter.value('osfamily')
+              when 'RedHat'
+                '/bin/rpm -q wazuh-agent --queryformat "%{VERSION}"'
+              when 'Debian'
+                '/usr/bin/dpkg-query -W -f="\\${Version}" wazuh-agent'
+              end
+        stdout, stderr, status = Open3.capture3(cmd)
+        if status.success?
+          stdout.strip
+        else
+          ''
+        end
       end
-      Facter::Core::Execution.execute(cmd)
     end
+
+    #def wazuh_agent_version
+    #  cmd = String.new
+    #  case Facter.value('osfamily')
+    #  when 'RedHat'
+    #    cmd = '/bin/rpm -q wazuh-agent --queryformat "%{VERSION}"'
+    #  when 'Debian'
+    #    cmd = '/usr/bin/dpkg-query -W -f="\\${Version}" wazuh-agent'
+    #  end
+    #  Facter::Core::Execution.execute(cmd)
+    #end
     
     def get_ossec_conf_value(key)
       if File.exist?(@ossec_file)
