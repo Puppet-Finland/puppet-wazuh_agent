@@ -34,8 +34,7 @@ Facter.add(:wazuh) do
       if File.exist?(@ossec_file)
         IO.readlines(@ossec_file).grep(%r{^.*<#{key}>}).map { |line|
           line.match(%r{^.*<#{key}>(.*)</#{key}>}).captures.first.strip
-        }.compact.first
-        break
+        }.compact.first && break
       else
         ''
       end
