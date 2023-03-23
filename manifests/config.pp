@@ -7,8 +7,8 @@ class wazuh_agent::config {
     ensure    => 'file',
     path      => '/var/ossec/etc/ossec.conf',
     owner     => 'root',
-    group     => 'root',
-    mode      => '0750',
+    group     => 'wazuh',
+    mode      => '0640',
     show_diff => true,
     content   => epp('wazuh_agent/ossec.conf.epp', {
         'server_name' => $wazuh_agent::server_name,
@@ -20,7 +20,7 @@ class wazuh_agent::config {
   file { $keys_file:
     owner => 'root',
     group => 'wazuh',
-    mode  => '6400',
+    mode  => '0640',
   }
 
   $auth_command = Sensitive("/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}")
@@ -41,7 +41,7 @@ class wazuh_agent::config {
     file { $local_options_file:
       owner  => 'root',
       group  => 'wazuh',
-      mode   => '6400',
+      mode   => '0640',
       source => 'puppet:///modules/wazuh_agent/local_internal_options.conf',
     }
   }
