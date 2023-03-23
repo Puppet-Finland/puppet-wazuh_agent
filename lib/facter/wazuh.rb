@@ -19,20 +19,18 @@ Facter.add(:wazuh) do
       end
     end
 
-    Facter.add('wazuh_agent_version') do
-      setcode do
-        cmd = case Facter.value('osfamily')
-              when 'RedHat'
-                '/bin/rpm -q wazuh-agent --queryformat "%{VERSION}"'
-              when 'Debian'
-                '/usr/bin/dpkg-query -W -f="\\${Version}" wazuh-agent'
-              end
-        stdout, _stderr, status = Open3.capture3(cmd)
-        if status.success?
-          stdout.strip
-        else
-          ''
-        end
+    def wazuh_version
+      cmd = case Facter.value('osfamily')
+            when 'RedHat'
+              '/bin/rpm -q wazuh-agent --queryformat "%{VERSION}"'
+            when 'Debian'
+              '/usr/bin/dpkg-query -W -f="\\${Version}" wazuh-agent'
+            end
+      stdout, _stderr, status = Open3.capture3(cmd)
+      if status.success?
+        stdout.strip
+      else
+        ''
       end
     end
 
@@ -68,7 +66,7 @@ Facter.add(:wazuh) do
 
     wazuh_hash[:name] = wazuh_agent_data(1)
     wazuh_hash[:server] = wazuh_server_name
-    wazuh_hash[:version] = wazuh_agent_version
+    wazuh_hash[:version] = agent_version
     wazuh_hash
   end
 end
