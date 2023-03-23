@@ -23,7 +23,6 @@ class wazuh_agent (
   Boolean $check_remote_state = false,
 
 ) {
-
   contain 'wazuh_agent::install'
   contain 'wazuh_agent::config'
   contain 'wazuh_agent::service'
