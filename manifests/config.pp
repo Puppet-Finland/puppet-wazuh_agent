@@ -1,9 +1,7 @@
-# @summary A short summary of the purpose of this class
+# @summary Wazuh agenc configuration
 #
-# A description of what this class does
+# Does not do much 
 #
-# @example
-#   include wazuh_agent::config
 class wazuh_agent::config {
 
   file { 'ossec.conf':
@@ -15,11 +13,10 @@ class wazuh_agent::config {
     show_diff => true,
     content   => epp('wazuh_agent/ossec.conf.epp', {
       'server_name' => $wazuh_agent::server_name,
-      'password'    => $wazuh_agent::password,
     }),
   }
 
-  $keys_file = '/var/ossec/bin/client.keys'
+  $keys_file = '/var/ossec/etc/client.keys'
 
   file { $keys_file:
     owner => 'root',
@@ -27,14 +24,27 @@ class wazuh_agent::config {
     mode  => '6400',
   }
 
-  $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}"
+  $auth_command = Sensitive("/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}")
 
   exec { 'agent-auth-linux':
     command => $auth_command,
-    unless  => "/bin/egrep -q -w ${wazuh_agent::name} ${keys_file}",
+    unless  => "/bin/egrep -q ${wazuh_agent::agent_name} ${keys_file}",
     require => [
       File['ossec.conf'],
       File[$keys_file],
     ],
+    logoutput => false,
+  }
+  
+  $local_options_file = '/var/ossec/etc/local_internal_options.conf'
+  
+  if $wazuh_agent::debug {
+    
+    file { $local_options_file:
+      owner  => 'root',
+      group  => 'wazuh',
+      mode   => '6400',
+      source => 'puppet:///modules/wazuh_agent/local_internal_options.conf',
+    }
   }
 }

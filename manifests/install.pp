@@ -28,8 +28,8 @@ class wazuh_agent::install {
         require  => Apt::Key['wazuh_agent'],
       }
 
-      package { $wauzh_agent::package_name:
-        ensure  => "${wauzh_agent::version}-${wauzh_agent::revision}",
+      package { $wazuh_agent::package_name:
+        ensure  => "${wazuh_agent::version}-${wazuh_agent::revision}",
         require => [
           Apt::Source['wazuh_agent'],
           Class['apt::update'],
