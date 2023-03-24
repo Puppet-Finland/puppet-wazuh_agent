@@ -1,27 +1,26 @@
-# @summary 
+# @summary Wazuh agent state managment
 #
-# Manage installation of Wazuh agent with some insight to remote state
+# Manage installation and changes to Wazuh agent
 #
 # @example
-#   include wazuh_agent
-#
+#   class { wazuh_agent:
+#     server_name => 'mywazuh.example.com',
+#     agent_name  => 'a_truly_funky_name',
+#     password    => 'created_with_enigma',
+#  }
 class wazuh_agent (
-  Stdlib::Host $server_name,
-  String $password,
-  String $api_username,
-  String $api_password,
-  Stdlib::Host $api_host,
-  Integer $control_last_ack_since,
-  Integer $control_last_keepalive_since,
-  String $control_status,
-  String $package_name = 'wazuh_agent',
+  String $server_name,
+  String $agent_name,
+  Variant[Sensitive[String],String] $password,
+  Boolean $debug = false,
+  Integer $control_last_ack_since = 300,
+  Integer $control_last_keepalive_since = 300,
+  String $control_status = 'disconnected',
+  String $package_name = 'wazuh-agent',
   String $version = '4.3.5',
   String $revision = '1',
-  Stdlib::Port $api_port = 55000,
-  Boolean $check_remote_state = false,
-
+  Integer $api_port = 55000,
 ) {
-
   contain 'wazuh_agent::install'
   contain 'wazuh_agent::config'
   contain 'wazuh_agent::service'
