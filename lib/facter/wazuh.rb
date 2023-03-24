@@ -66,7 +66,7 @@ Facter.add(:wazuh) do
 
     wazuh_hash[:name] = wazuh_agent_data(1)
     wazuh_hash[:server] = wazuh_server_name
-    wazuh_hash[:version] = agent_version
+    wazuh_hash[:version] = wazuh_version
     wazuh_hash
   end
 end
