@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+# @summary Some Wazuh facts 
+#
+# @author Petri Lammi petri.lammi@puppeteers.net
+#
+# @example
+#
+require 'open3'
+
 Facter.add(:wazuh) do
   confine kernel: 'Linux'
   confine ossec_conf_exists: true
