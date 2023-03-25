@@ -42,8 +42,8 @@ class wazuh_agent::config {
   if $facts.dig('wazuh', 'status') and $facts.dig('wazuh', 'status') != 'connected' {
 
     exec { 'notify':
-      cmd    => ':',
-      notify => Class['wazuh_agent::service'],
+      command => ':',
+      notify  => Class['wazuh_agent::service'],
     }
   }
 
