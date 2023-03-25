@@ -3,6 +3,8 @@
 # Does not do much 
 #
 class wazuh_agent::config {
+  assert_private()
+  
   file { 'ossec.conf':
     ensure    => 'file',
     path      => '/var/ossec/etc/ossec.conf',

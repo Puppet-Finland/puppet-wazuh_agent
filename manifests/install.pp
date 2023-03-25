@@ -13,8 +13,8 @@ class wazuh_agent::install {
         server => 'pgp.mit.edu',
       }
 
-      apt::source { 'wazuh_agent':
-        ensure   => present,
+      apt::source { $wazuh_agent::package_name:
+        ensure   => $wazuh_agent::version,
         comment  => 'WAZUH repository',
         location => 'https://packages.wazuh.com/4.x/apt',
         release  => 'stable',
@@ -25,7 +25,16 @@ class wazuh_agent::install {
         },
         require  => Apt::Key['wazuh_agent'],
       }
-
+      
+      # this is not really reliable. apt policy might.
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/main/examples/hold.pp
+      apt::pin { $wazuh_agent::package_name:
+        ensure   => present,
+        packages => $wazuh_agent::package_name,
+        version  => "${wazuh_agent::version}-${wazuh_agent::revision}",
+        priority => 999,
+      }
+    
       package { $wazuh_agent::package_name:
         ensure  => "${wazuh_agent::version}-${wazuh_agent::revision}",
         require => [
@@ -34,6 +43,7 @@ class wazuh_agent::install {
         ],
       }
     }
+    
     default: {
       fail('Unsupported distribution.')
     }
