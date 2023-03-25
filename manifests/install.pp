@@ -13,9 +13,9 @@ class wazuh_agent::install {
         server => 'pgp.mit.edu',
       }
 
-      apt::source { $wazuh_agent::package_name:
-        ensure   => $wazuh_agent::version,
-        comment  => 'WAZUH repository',
+      apt::source { $wazuh_agent::repo_name:
+        ensure   => present,
+        comment  => 'WAZUH repository created by Puppet',
         location => 'https://packages.wazuh.com/4.x/apt',
         release  => 'stable',
         repos    => 'main',
@@ -25,25 +25,33 @@ class wazuh_agent::install {
         },
         require  => Apt::Key['wazuh_agent'],
       }
-      
-      # this is not really reliable. apt policy might.
-      # https://github.com/puppetlabs/puppetlabs-apt/blob/main/examples/hold.pp
-      apt::pin { $wazuh_agent::package_name:
-        ensure   => present,
-        packages => $wazuh_agent::package_name,
-        version  => "${wazuh_agent::version}-${wazuh_agent::revision}",
-        priority => 999,
-      }
-    
+
       package { $wazuh_agent::package_name:
         ensure  => "${wazuh_agent::version}-${wazuh_agent::revision}",
         require => [
-          Apt::Source['wazuh_agent'],
+          Apt::Source[$wazuh_agent::repo_name],
           Class['apt::update'],
         ],
+        notify  => Class['wazuh_agent::service'],
+      }
+
+      # Wazuh people recommend removing repo file, but
+      # That would lead to hacky manifests with puppet
+      # Instad we *hope* that pinning and marking work
+      # together reliably
+      apt::pin { $wazuh_agent::package_name:
+        packages => $wazuh_agent::package_name,
+        version  => "${wazuh_agent::version}-${wazuh_agent::revision}",
+        priority => 1001,
+        require  => Package[$wazuh_agent::package_name],
+      }
+
+      apt::mark { $wazuh_agent::package_name:
+        setting => 'hold',
+        require => Package[$wazuh_agent::package_name],
       }
     }
-    
+
     default: {
       fail('Unsupported distribution.')
     }
