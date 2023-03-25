@@ -53,7 +53,8 @@ class wazuh_agent::config {
   }
 
   if $facts.dig('wazuh', 'status') and $facts.dig('wazuh', 'status') != 'connected' {
-    notify { 'wazuh_agent::service':
+
+    notify { Class['wazuh_agent::service']:
       message => "Wazuh: agent ${wazuh_agent::agent_name} is not connected",
       require => Exec['agent-auth-linux'],
     }
