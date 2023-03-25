@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'open3'
+
 Facter.add(:wazuh) do
   confine kernel: 'Linux'
   confine ossec_conf_exists: true
