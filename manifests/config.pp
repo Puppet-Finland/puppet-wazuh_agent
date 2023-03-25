@@ -51,4 +51,11 @@ class wazuh_agent::config {
     mode   => '0640',
     source => 'puppet:///modules/wazuh_agent/local_internal_options.conf',
   }
+
+  if $facts.dig('wazuh', 'status') and $facts.dig('wazuh', 'status') != 'connected' {
+    notify { 'wazuh_agent::service':
+      message => "Wazuh: agent ${wazuh_agent::agent_name} is not connected",
+      require => Exec['agent-auth-linux'],
+    }
+  }
 }

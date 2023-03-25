@@ -12,14 +12,14 @@ class wazuh_agent (
   String $server_name,
   String $agent_name,
   Variant[Sensitive[String],String] $password,
-  Boolean $debug = false,
-  Integer $control_last_ack_since = 300,
+  Integer $control_last_ack_since       = 300,
   Integer $control_last_keepalive_since = 300,
-  String $control_status = 'disconnected',
-  String $package_name = 'wazuh-agent',
-  String $version = '4.3.5',
-  String $revision = '1',
-  Integer $api_port = 55000,
+  String $control_status                = 'disconnected',
+  String $package_name                  = 'wazuh-agent',
+  String $version                       = '4.3.5',
+  String $revision                      = '1',
+  Integer $api_port                     = 55000,
+  Boolean $debug                        = false,
 ) {
   contain 'wazuh_agent::install'
   contain 'wazuh_agent::config'
