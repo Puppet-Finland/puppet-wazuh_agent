@@ -61,12 +61,22 @@ Facter.add(:wazuh) do
         case key
         when 'status'
           wazuh_hash[:status] = value.delete("'")
+        when 'last_keepalive'
+          # calculate seconds since last keepalive
+          seconds_since_keepalive = value.delete("'").empty? ? 0 : (Time.now - Time.parse(value)).to_i
+          wazuh_hash[:last_keepalive] = seconds_since_keepalive
+        when 'last_ack'
+          # calculate seconds since last ack
+          seconds_since_ack = value.delete("'").empty? ? 0 : (Time.now - Time.parse(value)).to_i
+          wazuh_hash[:last_ack] = seconds_since_ack
           break
         end
       end
     end
 
+    wazuh_hash[:id] = wazuh_agent_data(0)
     wazuh_hash[:name] = wazuh_agent_data(1)
+    wazuh_hash[:ip] = wazuh_agent_data(2)
     wazuh_hash[:server] = wazuh_server_name
     wazuh_hash[:version] = wazuh_version
     wazuh_hash
