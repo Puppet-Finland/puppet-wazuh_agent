@@ -41,14 +41,15 @@ class wazuh_agent::config {
     source => 'puppet:///modules/wazuh_agent/local_internal_options.conf',
   }
 
+
   if $facts.dig('wazuh') {
-    if $wazuh_agent::check_status and $facts.dig('wazuh', 'status') != 'connected' {
+    if $wazuh_agent::check_status and ($facts.dig('wazuh', 'status') != 'connected') {
       $_supervise = true
     }
-    if $wazuh_agent::check_keepalive and $facts.dig('wazuh', 'keepalive') > $wazuh_agent::keepalive_limit {
+    elsif $wazuh_agent::check_keepalive and ($facts.dig('wazuh', 'last_keepalive') > $wazuh_agent::keepalive_limit) {
       $_supervice = true
     }
-    if $wazuh_agent::check_last_ack and $facts.dig('wazuh', 'last_ack') > $wazuh_agent::last_ack_limit {
+    elsif $wazuh_agent::check_last_ack and ($facts.dig('wazuh', 'last_ack') > $wazuh_agent::last_ack_limit) {
       $_supervise = true
     }
     else {
@@ -57,35 +58,32 @@ class wazuh_agent::config {
   }
 
   if $_supervise {
-    exec { 'react to agent having connection problems':
+    exec { 'reacting to agent having connection problems':
       command => '/bin/true',
       notify  => Exec['auth notify'],
     }
   }
 
-  #$auth_command = Sensitive("/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}")
-  #$password = Sensitive($wazuh_agent::password)
-  $auth_command = ("/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}")
-  #$auth_command = ("/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P $password")
-
+  $_auth_command = Sensitive("/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}")
+  
   exec { 'auth':
-    command   => $auth_command,
-    unless    => "/bin/egrep -q ${wazuh_agent::agent_name} ${keys_file}",
+    command   => $_auth_command,
+    unless    => "/bin/egrep -q \'${wazuh_agent::agent_name}\' ${keys_file}",
     tries     => 3,
     try_sleep => 3,
     require   => [
       File['ossec.conf'],
       File[$keys_file],
     ],
-    logoutput => on_failure,
+    logoutput => false,
   }
 
   exec { 'auth notify':
-    command     => $auth_command,
+    command     => $_auth_command,
     tries       => 3,
     try_sleep   => 3,
     refreshonly => true,
-    logoutput   => on_failure,
+    logoutput   => false,
     notify      => Class['wazuh_agent::service'],
   }
 }
