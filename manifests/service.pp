@@ -4,7 +4,7 @@
 #
 class wazuh_agent::service {
   assert_private()
-
+  
   service { $wazuh_agent::service_name:
     ensure => 'running',
     enable => true,
