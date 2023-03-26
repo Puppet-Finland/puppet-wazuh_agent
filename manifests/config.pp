@@ -41,7 +41,6 @@ class wazuh_agent::config {
     source => 'puppet:///modules/wazuh_agent/local_internal_options.conf',
   }
 
-
   if $facts.dig('wazuh') {
     if $wazuh_agent::check_status and ($facts.dig('wazuh', 'status') != 'connected') {
       $_supervise = true
@@ -65,7 +64,7 @@ class wazuh_agent::config {
   }
 
   $_auth_command = Sensitive("/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}")
-  
+
   exec { 'auth':
     command   => $_auth_command,
     unless    => "/bin/egrep -q \'${wazuh_agent::agent_name}\' ${keys_file}",
