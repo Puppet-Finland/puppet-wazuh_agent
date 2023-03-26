@@ -56,15 +56,21 @@ class wazuh_agent::config {
     }
   }
 
-  if $_supervise {
+  # agent can be connected and stil have a wrong password
+  if $_supervise or $wazuh_agent::reauth {
     exec { 'reacting to agent having connection problems':
       command => '/bin/true',
       notify  => Exec['auth notify'],
     }
   }
 
-  $_auth_command = Sensitive("/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}")
-
+  $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}"
+  $_auth_command = String($wazuh_agent::enrollment_port) ? {
+    /1515/      => $auth_command,
+    /(\d{4,5})/ => sprintf('%s -p %s', $auth_command, $1),
+    default     => $auth_command,
+  }
+  
   exec { 'auth':
     command   => $_auth_command,
     unless    => "/bin/egrep -q \'${wazuh_agent::agent_name}\' ${keys_file}",
