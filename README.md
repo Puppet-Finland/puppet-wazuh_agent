@@ -14,31 +14,51 @@
 ## Description
 
 This is a simple and straightforward module to set up and manage Wazuh
-agent. No server side is supported.
+agent. No server side is and will not be supported.
 
-I wanted a module for just the agent side, and have a clean and simple
-structure.
+The drive behind this module was to have one for just the agent side, and keep a lean and mean with a simple and opinionated structure, as well as provide sensible defaults.
 
-I've re-used some parts of their module here and there. All credits 
-therefore go to them.
+I've re-used some parts of Wazuh's official module here and there. All credits 
+therefore go to them. Their module can be found here: [wazuh-puppet](https://github.com/wazuh/wazuh-puppet)
+
+To know more about Wazuh, visit [Wazuh website](https://wazuh.com)
 
 ## Usage
 
-<pre>
+```
    class { wazuh_agent:
-     enrollment_server => 'mywazuh.example.com',
-     password          => 'created_with_enigma',
+     enrollment_server   => 'mywazuh.example.com',
+     enrollment_password => 'created_with_rusty_enigma',
   }
-</pre>
+```
+
+##Branches
+
+* ```master``` contains the latest code with more hiccups
+* ```stable``` contains the code with hopefully less hiccups
 
 ## Limitations
 
-Only manages the Wazuh agent, not the server. The server side is frequently run
-on Kubernetes.
+Only supports the Wazuh agent, not the server. The server side is frequently run
+on Kubernetes and the likes. 
 
-consider using changelog). You can also add any additional sections you feel are
-necessary or important to include here. Please use the `##` header.
+So far minimally tested. 
 
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
+## TODO
+
+* Write rspec-puppet tests (must have)
+
+## Credits
+
+* Nicolas Zin
+* Jonathan Gazeley
+* Michael Porter
+* Wazuh puppet module authors
+
+[Check out what Wazuh is cooking](https://wazuh.com)
+
+## License
+
+GPLv2
+
+
