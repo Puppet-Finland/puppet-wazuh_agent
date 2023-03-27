@@ -1,8 +1,13 @@
+<%- |
+Boolean $server_name,
+String $communication_port,
+| -%>
 <ossec_config>
   <client>
     <server>
       <address><%= $server_name %></address> 
-    </server>
+      <port><%= $communication_port %></port>
+   </server>
     <config-profile>ubuntu, ubuntu18, ubuntu18.04</config-profile>
     <notify_time>10</notify_time>
     <time-reconnect>60</time-reconnect>

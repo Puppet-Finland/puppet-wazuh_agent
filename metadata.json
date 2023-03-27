@@ -1,12 +1,12 @@
 {
-  "name": "pelamm-wazuh_agent",
-  "version": "0.1.0",
+  "name": "puppet-wazuh_agent",
+  "version": "1.0.0",
   "author": "kibahop <petri.lammi@puppeteers.net>",
-  "summary": "",
+  "summary": "Install configure and manage Wazuh agent",
   "license": "Apache-2.0",
-  "source": "",
+  "source": "https://github.com/Puppet-Finland/puppet-wazuh_agent.git",
   "dependencies": [
-
+      { "name":"puppetlabs/stdlib","version_requirement":">= 6.6.0 < 8.5.0" }
   ],
   "operatingsystem_support": [
     {
@@ -49,7 +49,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 6.21.0 < 8.0.0"
+      "version_requirement": ">= 5.5.0 < 8.0.0"
     }
   ],
   "pdk-version": "2.7.0",

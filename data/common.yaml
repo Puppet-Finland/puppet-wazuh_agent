@@ -1,11 +1,14 @@
 ---
 wazuh_agent::enrollment_port: 1515
-wazuh_agent::communication_port : 1514
-wazuh_agent::repo_name: wazuh-puppet
-wazuh_agent::package_name: wazuh-agent
-wazuh_agent::service_name: wazuh-agent.service
-wazuh_agent::version: 4.3.5
-wazuh_agent::revision: 1
+wazuh_agent::management_port : 1514
+wazuh_agent::agent_name: "%{facts.fqdn}"
+wazuh_agent::repo_name: 'wazuh-puppet'
+wazuh_agent::package_name: 'wazuh-agent'
+wazuh_agent::service_name: 'wazuh-agent.service'
+wazuh_agent::service_ensure: 'running'
+wazuh_agent::service_enable: true
+wazuh_agent::version: '4.3.5'
+wazuh_agent::revision: '1'
 wazuh_agent::debug: false
 wazuh_agent::reauth: false
 wazuh_agent::check_status: true

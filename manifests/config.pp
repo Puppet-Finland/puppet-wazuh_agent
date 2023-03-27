@@ -1,6 +1,6 @@
 # @summary Wazuh agent configuration
 #
-# 
+# Configure and supervise agent  
 #
 class wazuh_agent::config {
   assert_private()
@@ -13,7 +13,8 @@ class wazuh_agent::config {
     mode      => '0640',
     show_diff => true,
     content   => epp('wazuh_agent/ossec.conf.epp', {
-        'server_name' => $wazuh_agent::server_name,
+        'enrollment_server' => $wazuh_agent::enrollment_server,
+        'enrollment_port'   => $wazuh_agent::enrollment_port,
     }),
   }
 
@@ -56,23 +57,22 @@ class wazuh_agent::config {
     }
   }
 
-  # agent can be connected and stil have a wrong password
   if $_supervise or $wazuh_agent::reauth {
-    exec { 'reacting to agent having connection problems':
+    exec { 'reacting to connection problem or reauth request':
       command => '/bin/true',
       notify  => Exec['auth notify'],
     }
   }
 
   $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}"
-  $_auth_command = String($wazuh_agent::enrollment_port) ? {
+  $_auth_command = String($wazuh_agent::enrollment_server_port) ? {
     /1515/      => $auth_command,
     /(\d{4,5})/ => sprintf('%s -p %s', $auth_command, $1),
     default     => $auth_command,
   }
-  
+
   exec { 'auth':
-    command   => $_auth_command,
+    command   => Sensitive($_auth_command),
     unless    => "/bin/egrep -q \'${wazuh_agent::agent_name}\' ${keys_file}",
     tries     => 3,
     try_sleep => 3,
@@ -84,7 +84,7 @@ class wazuh_agent::config {
   }
 
   exec { 'auth notify':
-    command     => $_auth_command,
+    command     => Sensitive($_auth_command),
     tries       => 3,
     try_sleep   => 3,
     refreshonly => true,
