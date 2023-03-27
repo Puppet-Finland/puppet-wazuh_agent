@@ -19,6 +19,8 @@ Manage Wazuh agent
 
 * **See also**
   * https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client.html?highlight=enrollment#enrollment
+  * data/common.yaml
+    * for default values.
 
 #### Examples
 
@@ -100,7 +102,7 @@ The password to register and enroll the agent.
 
 ##### <a name="-wazuh_agent--management_server"></a>`management_server`
 
-Data type: `String[1]`
+Data type: `Optional[String[1]]`
 
 The management server name.
 

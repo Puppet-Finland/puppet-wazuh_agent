@@ -8,6 +8,8 @@
 #
 # @see https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client.html?highlight=enrollment#enrollment
 #
+# @see data/common.yaml for default values.
+#
 # @param version
 #   Wazuh agent version. Default 4.3.5.
 #   
@@ -78,7 +80,7 @@ class wazuh_agent (
   String[1] $enrollment_server,
   Integer $enrollment_server_port,
   Variant[Sensitive[String[1]],String[1]] $enrollment_password,
-  String[1] $management_server,
+  Optional[String[1]] $management_server,
   Integer $management_server_port,
   String[1] $package_name,
   String[1] $service_name,
@@ -92,6 +94,14 @@ class wazuh_agent (
   Boolean $check_keepalive,
   Boolean $check_last_ack,
 ) {
+  # if management_server is not set, assume single node setup
+  if $management_server == undef {
+    $_management_server = $enrollment_server
+  }
+  else {
+    $_management_server =  $management_server
+  }
+
   contain 'wazuh_agent::install'
   contain 'wazuh_agent::config'
   contain 'wazuh_agent::service'

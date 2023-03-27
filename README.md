@@ -16,12 +16,14 @@
 This is a simple and straightforward module to set up and manage Wazuh
 agent. No server side is and will not be supported.
 
-The drive behind this module was to have one for just the agent side, and keep a lean and mean with a simple and opinionated structure, as well as provide sensible defaults.
+The assumption is that the agent side is only minimally set up and kept running. The server side will provide configuration remotely by using the agent.conf file.
+
+The drive behind this module was to have one for just the agent side, and keep it lean and mean with a simple and opinionated structure, as well as provide sensible defaults.
 
 I've re-used some parts of Wazuh's official module here and there. All credits 
 therefore go to them. Their module can be found here: [wazuh-puppet](https://github.com/wazuh/wazuh-puppet)
 
-To know more about Wazuh, visit [Wazuh website](https://wazuh.com)
+To learn more about Wazuh, visit [their website](https://wazuh.com)
 
 ## Usage
 
@@ -46,7 +48,9 @@ So far minimally tested.
 
 ## TODO
 
-* Write rspec-puppet tests (must have)
+* Handle separate management server
+* Support RHEL9
+* Write rspec-puppet tests
 
 ## Credits
 

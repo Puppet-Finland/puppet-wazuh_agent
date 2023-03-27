@@ -1,12 +1,12 @@
 <%- |
-Boolean $server_name,
-String $communication_port,
+String $enrollment_server,
+Integer $enrollment_server_port,
 | -%>
 <ossec_config>
   <client>
     <server>
-      <address><%= $server_name %></address> 
-      <port><%= $communication_port %></port>
+      <address><%= $enrollment_server -%></address> 
+      <port><%= $enrollment_server_port -%></port>
    </server>
     <config-profile>ubuntu, ubuntu18, ubuntu18.04</config-profile>
     <notify_time>10</notify_time>

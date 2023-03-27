@@ -1,6 +1,8 @@
 ---
-wazuh_agent::enrollment_port: 1515
-wazuh_agent::management_port : 1514
+wazuh_agent::enrollment_server_port: 1515
+wazuh_agent::management_server_port: 1514
+# explicit undef
+wazuh_agent::management_server: ~
 wazuh_agent::agent_name: "%{facts.fqdn}"
 wazuh_agent::repo_name: 'wazuh-puppet'
 wazuh_agent::package_name: 'wazuh-agent'

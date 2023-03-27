@@ -13,8 +13,8 @@ class wazuh_agent::config {
     mode      => '0640',
     show_diff => true,
     content   => epp('wazuh_agent/ossec.conf.epp', {
-        'enrollment_server' => $wazuh_agent::enrollment_server,
-        'enrollment_port'   => $wazuh_agent::enrollment_port,
+        'enrollment_server'      => $wazuh_agent::enrollment_server,
+        'enrollment_server_port' => $wazuh_agent::enrollment_server_port,
     }),
   }
 
@@ -64,7 +64,7 @@ class wazuh_agent::config {
     }
   }
 
-  $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::server_name} -P ${wazuh_agent::password}"
+  $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::enrollment_server} -P ${wazuh_agent::password}"
   $_auth_command = String($wazuh_agent::enrollment_server_port) ? {
     /1515/      => $auth_command,
     /(\d{4,5})/ => sprintf('%s -p %s', $auth_command, $1),
