@@ -20,8 +20,8 @@ The assumption is that the agent side is only minimally set up and kept running.
 
 The drive behind this module was to have one for just the agent side, and keep it lean and mean with a simple and opinionated structure, as well as provide sensible defaults.
 
-I've re-used some parts of Wazuh's official module here and there. All credits 
-therefore go to them. Their module can be found here: [wazuh-puppet](https://github.com/wazuh/wazuh-puppet)
+I've cherry-picked some code from the official Wazuh module. Credits 
+naturally go to them. Their module can be found here: [wazuh-puppet](https://github.com/wazuh/wazuh-puppet)
 
 To learn more about Wazuh, visit [their website](https://wazuh.com)
 
@@ -34,10 +34,10 @@ To learn more about Wazuh, visit [their website](https://wazuh.com)
   }
 ```
 
-##Branches
+## Branches
 
 * ```master``` contains the latest code with more hiccups
-* ```stable``` contains the code with hopefully less hiccups
+* ```stable``` contains the code with less hiccups
 
 ## Limitations
 
@@ -57,9 +57,9 @@ So far minimally tested.
 * Nicolas Zin
 * Jonathan Gazeley
 * Michael Porter
-* Wazuh puppet module authors
+* All official Wazuh puppet module contributors.
 
-[Check out what Wazuh is cooking](https://wazuh.com)
+[Check out what's cooking](https://wazuh.com)
 
 ## License
 
