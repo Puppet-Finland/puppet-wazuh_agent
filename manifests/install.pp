@@ -37,8 +37,8 @@ class wazuh_agent::install {
 
       # Wazuh people recommend removing repo file, but
       # That would lead to hacky manifests with puppet
-      # Instad we *hope* that pinning and marking work
-      # together reliably
+      # Instad we just have *high hopes* that pinning and marking
+      # together work reliably
       apt::pin { $wazuh_agent::package_name:
         packages => $wazuh_agent::package_name,
         version  => "${wazuh_agent::version}-${wazuh_agent::revision}",

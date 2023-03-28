@@ -13,8 +13,8 @@ class wazuh_agent::config {
     mode      => '0640',
     show_diff => true,
     content   => epp('wazuh_agent/ossec.conf.epp', {
-        'enrollment_server'      => $wazuh_agent::enrollment_server,
-        'enrollment_server_port' => $wazuh_agent::enrollment_server_port,
+        'management_server'      => $wazuh_agent::_management_server,
+        'management_server_port' => $wazuh_agent::management_server_port,
     }),
   }
 
@@ -42,6 +42,9 @@ class wazuh_agent::config {
     source => 'puppet:///modules/wazuh_agent/local_internal_options.conf',
   }
 
+  $value = $facts.dig('wazuh')
+  notify { "wazuh fact is: ${value}": }
+
   if $facts.dig('wazuh') {
     if $wazuh_agent::check_status and ($facts.dig('wazuh', 'status') != 'connected') {
       $_supervise = true
@@ -58,13 +61,13 @@ class wazuh_agent::config {
   }
 
   if $_supervise or $wazuh_agent::reauth {
-    exec { 'reacting to connection problem or reauth request':
+    exec { 'reacting to a connection problem or a reauth request':
       command => '/bin/true',
       notify  => Exec['auth notify'],
     }
   }
 
-  $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::enrollment_server} -P ${wazuh_agent::password}"
+  $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::enrollment_server} -P ${wazuh_agent::enrollment_password}"
   $_auth_command = String($wazuh_agent::enrollment_server_port) ? {
     /1515/      => $auth_command,
     /(\d{4,5})/ => sprintf('%s -p %s', $auth_command, $1),
@@ -72,7 +75,7 @@ class wazuh_agent::config {
   }
 
   exec { 'auth':
-    command   => Sensitive($_auth_command),
+    command   => $_auth_command,
     unless    => "/bin/egrep -q \'${wazuh_agent::agent_name}\' ${keys_file}",
     tries     => 3,
     try_sleep => 3,
@@ -80,15 +83,15 @@ class wazuh_agent::config {
       File['ossec.conf'],
       File[$keys_file],
     ],
-    logoutput => false,
+    logoutput => true,
   }
 
   exec { 'auth notify':
-    command     => Sensitive($_auth_command),
+    command     => $_auth_command,
     tries       => 3,
     try_sleep   => 3,
     refreshonly => true,
-    logoutput   => false,
+    logoutput   => true,
     notify      => Class['wazuh_agent::service'],
   }
 }
