@@ -37,7 +37,7 @@ To learn more about Wazuh, visit [their website](https://wazuh.com)
 ## Branches
 
 * ```master``` contains the latest code with more hiccups
-* ```stable``` contains the code with less hiccups
+* ```tagged branches``` contain the code with less hiccups
 
 ## Limitations
 
