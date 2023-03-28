@@ -42,9 +42,6 @@ class wazuh_agent::config {
     source => 'puppet:///modules/wazuh_agent/local_internal_options.conf',
   }
 
-  $value = $facts.dig('wazuh')
-  notify { "wazuh fact is: ${value}": }
-
   if $facts.dig('wazuh') {
     if $wazuh_agent::check_status and ($facts.dig('wazuh', 'status') != 'connected') {
       $_supervise = true
@@ -59,6 +56,16 @@ class wazuh_agent::config {
       $_supervise = false
     }
   }
+  else {
+    $_supervise = false
+  }
+
+  $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::enrollment_server} -P ${wazuh_agent::enrollment_password}" # lint:ignore:140chars
+  $_auth_command = String($wazuh_agent::enrollment_server_port) ? {
+    /1515/      => $auth_command,
+    /(\d{4,5})/ => sprintf('%s -p %s', $auth_command, $1),
+    default     => $auth_command,
+  }
 
   if $_supervise or $wazuh_agent::reauth {
     exec { 'reacting to a connection problem or a reauth request':
@@ -67,29 +74,23 @@ class wazuh_agent::config {
     }
   }
 
-  $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::enrollment_server} -P ${wazuh_agent::enrollment_password}"
-  $_auth_command = String($wazuh_agent::enrollment_server_port) ? {
-    /1515/      => $auth_command,
-    /(\d{4,5})/ => sprintf('%s -p %s', $auth_command, $1),
-    default     => $auth_command,
-  }
-
   exec { 'auth':
-    command   => $_auth_command,
+    command   => Sensitive($_auth_command),
     unless    => "/bin/egrep -q \'${wazuh_agent::agent_name}\' ${keys_file}",
     tries     => 3,
-    try_sleep => 3,
+    try_sleep => 5,
     require   => [
       File['ossec.conf'],
       File[$keys_file],
     ],
     logoutput => true,
+    notify    => Class['wazuh_agent::service'],
   }
 
   exec { 'auth notify':
-    command     => $_auth_command,
+    command     => Sensitive($_auth_command),
     tries       => 3,
-    try_sleep   => 3,
+    try_sleep   => 5,
     refreshonly => true,
     logoutput   => true,
     notify      => Class['wazuh_agent::service'],

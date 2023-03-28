@@ -28,8 +28,8 @@ Manage Wazuh agent
 
 ```puppet
 class { wazuh_agent:
-  enrollment_server => 'mywazuh.example.com',
-  password          => 'created_with_enigma',
+  enrollment_server   => 'mywazuh.example.com',
+  enrollment_password => 'created_with_enigma',
 }
 ```
 

@@ -1,0 +1,33 @@
+<!-- exmple auth block to allow replacement of agents -->
+<!-- the registration service -->
+<auth>
+<!-- execute auth daemon -->
+  <disabled>no</disabled>
+  <!-- listen for agents on TLS port (1515 by default) -->
+  <remote_enrollment>yes</remote_enrollment>
+  <!-- registation port -->
+  <port>1515</port>
+  <!-- do not track source ips -->
+  <use_source_ip>no</use_source_ip>
+  <!-- agent replacement, *all* conditions must be met to perform the replacement. -->
+    <force>
+      <!-- force the insertion of an agent. if a duplicate name or IP address, it will be will be removed -->
+      <enabled>yes</enabled>
+      <!-- Require the agent to have a different key from the one currently registered -->
+      <key_mismatch>no</key_mismatch>
+      <!-- do not require clients to be disconnected for any time -->
+      <disconnected_time enabled="no">1s</disconnected_time>
+      <!-- do not require agent to be registered for some time before replacement -->
+      <after_registration_time>0</after_registration_time>
+    </force>
+  <!-- purge the old agents from client.keys instead of prefixing them with ’!’ -->
+  <purge>yes</purge>
+  <!-- enable shared password authentication -->
+  <use_password>yes</use_password>
+  <limit_maxagents>yes</limit_maxagents>
+  <ciphers>HIGH:!ADH:!EXP:!MD5:!RC4:!3DES:!CAMELLIA:@STRENGTH</ciphers>
+  <ssl_verify_host>no</ssl_verify_host>
+  <ssl_manager_cert>/var/ossec/etc/sslmanager.cert</ssl_manager_cert>
+  <ssl_manager_key>/var/ossec/etc/sslmanager.key</ssl_manager_key>
+  <ssl_auto_negotiate>no</ssl_auto_negotiate>
+</auth>

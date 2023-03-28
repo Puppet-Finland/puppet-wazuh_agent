@@ -1,6 +1,6 @@
 <%- |
 String $management_server,
-Integer $managemet_server_port,
+Integer $management_server_port,
 | -%>
 <ossec_config>
   <client>
