@@ -1,3 +1,4 @@
+#
 # @summary Wazuh agent configuration
 #
 # Configure and supervise agent  
@@ -50,10 +51,10 @@ class wazuh_agent::config {
     elsif $wazuh_agent::check_last_ack and ($facts.dig('wazuh', 'last_ack') > $wazuh_agent::last_ack_limit) {
       $_supervise = true
     }
-    elsif $facts.dig('wazuh', 'name') != $wazuh::agent_name {
+    elsif $facts.dig('wazuh', 'name') != $wazuh_agent::agent_name {
       $_reauth = true
     }
-    elsif $facts.dig('wazuh', 'server') != $wazuh::enrollment_server {
+    elsif $facts.dig('wazuh', 'server') != $wazuh_agent::enrollment_server {
       $_reauth = true
     }
   }
@@ -83,7 +84,6 @@ class wazuh_agent::config {
       File[$ossec_conf_file],
       File[$keys_file],
     ],
-    logoutput => true,
     notify    => Class['wazuh_agent::service'],
   }
 
