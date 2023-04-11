@@ -60,9 +60,6 @@
 # @param debug
 #   Enable some agent side debugging. Default is false.
 #
-# @param reauth
-#   Force reauthentication. Default is false.
-#
 # @param check_status
 #   Whether to monitor agent connection status. Default is true.
 #
@@ -89,7 +86,6 @@ class wazuh_agent (
   Integer $last_ack_limit,
   Integer $keepalive_limit,
   Boolean $debug,
-  Boolean $reauth,
   Boolean $check_status,
   Boolean $check_keepalive,
   Boolean $check_last_ack,
