@@ -48,8 +48,9 @@ So far minimally tested.
 
 ## TODO
 
+* Support RedHat family distros
 * Handle separate management server
-* Support RHEL9
+* Manage ossec.conf as fragments
 * Write rspec-puppet tests
 
 ## Credits

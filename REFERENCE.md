@@ -9,6 +9,8 @@
 * [`wazuh_agent`](#wazuh_agent): Manage Wazuh agent
 * [`wazuh_agent::config`](#wazuh_agent--config): Wazuh agent configuration
 * [`wazuh_agent::install`](#wazuh_agent--install): Install Wazuh agent
+* [`wazuh_agent::install::apt`](#wazuh_agent--install--apt): Apt repo
+* [`wazuh_agent::install::yum`](#wazuh_agent--install--yum): Wazuh yum install
 * [`wazuh_agent::service`](#wazuh_agent--service): Wazuh agent service
 
 ## Classes
@@ -53,7 +55,6 @@ The following parameters are available in the `wazuh_agent` class:
 * [`last_ack_limit`](#-wazuh_agent--last_ack_limit)
 * [`keepalive_limit`](#-wazuh_agent--keepalive_limit)
 * [`debug`](#-wazuh_agent--debug)
-* [`reauth`](#-wazuh_agent--reauth)
 * [`check_status`](#-wazuh_agent--check_status)
 * [`check_keepalive`](#-wazuh_agent--check_keepalive)
 * [`check_last_ack`](#-wazuh_agent--check_last_ack)
@@ -156,12 +157,6 @@ Data type: `Boolean`
 
 Enable some agent side debugging. Default is false.
 
-##### <a name="-wazuh_agent--reauth"></a>`reauth`
-
-Data type: `Boolean`
-
-Force reauthentication. Default is false.
-
 ##### <a name="-wazuh_agent--check_status"></a>`check_status`
 
 Data type: `Boolean`
@@ -187,6 +182,14 @@ Configure and supervise agent
 ### <a name="wazuh_agent--install"></a>`wazuh_agent::install`
 
 Install Wazuh agent
+
+### <a name="wazuh_agent--install--apt"></a>`wazuh_agent::install::apt`
+
+Apt repo
+
+### <a name="wazuh_agent--install--yum"></a>`wazuh_agent::install::yum`
+
+Wazuh yum install
 
 ### <a name="wazuh_agent--service"></a>`wazuh_agent::service`
 

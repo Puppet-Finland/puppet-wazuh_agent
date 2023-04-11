@@ -78,13 +78,13 @@ class wazuh_agent::config {
   }
 
   exec { 'auth':
-    command   => Sensitive($_auth_command),
-    unless    => "/bin/egrep -q \'${wazuh_agent::agent_name}\' ${keys_file}",
-    require   => [
+    command => Sensitive($_auth_command),
+    unless  => "/bin/egrep -q \'${wazuh_agent::agent_name}\' ${keys_file}",
+    require => [
       File[$ossec_conf_file],
       File[$keys_file],
     ],
-    notify    => Class['wazuh_agent::service'],
+    notify  => Class['wazuh_agent::service'],
   }
 
   exec { 'auth notify':
