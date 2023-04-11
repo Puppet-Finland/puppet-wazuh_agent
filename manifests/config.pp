@@ -5,41 +5,39 @@
 class wazuh_agent::config {
   assert_private()
 
-  file { 'ossec.conf':
-    ensure    => 'file',
-    path      => '/var/ossec/etc/ossec.conf',
-    owner     => 'root',
-    group     => 'wazuh',
-    mode      => '0640',
-    show_diff => true,
-    content   => epp('wazuh_agent/ossec.conf.epp', {
-        'management_server'      => $wazuh_agent::_management_server,
-        'management_server_port' => $wazuh_agent::management_server_port,
-    }),
-  }
-
   $keys_file = '/var/ossec/etc/client.keys'
-
-  file { $keys_file:
-    owner => 'root',
-    group => 'wazuh',
-    mode  => '0640',
-  }
-
   $local_options_file = '/var/ossec/etc/local_internal_options.conf'
+  $ossec_conf_file = '/var/ossec/etc/ossec.conf'
+  $authd_pass_file = '/var/ossec/etc/authd_pass'
 
-  $presence = $wazuh_agent::debug ? {
-    true     => 'present',
-    false    => 'absent',
-    'defaut' => 'absent',
+  $local_options_presence = $wazuh_agent::debug ? {
+    true    => 'present',
+    false   => 'absent',
+    default => 'absent',
   }
 
-  file { $local_options_file:
-    ensure => $presence,
-    owner  => 'root',
-    group  => 'wazuh',
-    mode   => '0640',
-    source => 'puppet:///modules/wazuh_agent/local_internal_options.conf',
+  file {
+    default:
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'wazuh',
+      mode   => '0640',
+      ;
+    $keys_file:
+      ;
+    $local_options_file:
+      ensure => $local_options_presence,
+      source => 'puppet:///modules/wazuh_agent/local_internal_options.conf',
+      ;
+    $ossec_conf_file:
+      content   => epp('wazuh_agent/ossec.conf.epp', {
+          'management_server'      => $wazuh_agent::_management_server,
+          'management_server_port' => $wazuh_agent::management_server_port,
+      }),
+      ;
+    $authd_pass_file:
+      content => $wazuh_agent::enrollment_password,
+      ;
   }
 
   if $facts.dig('wazuh') {
@@ -47,17 +45,21 @@ class wazuh_agent::config {
       $_supervise = true
     }
     elsif $wazuh_agent::check_keepalive and ($facts.dig('wazuh', 'last_keepalive') > $wazuh_agent::keepalive_limit) {
-      $_supervice = true
+      $_supervise = true
     }
     elsif $wazuh_agent::check_last_ack and ($facts.dig('wazuh', 'last_ack') > $wazuh_agent::last_ack_limit) {
       $_supervise = true
     }
-    else {
-      $_supervise = false
+    elsif $facts.dig('wazuh', 'name') != $wazuh::agent_name {
+      $_reauth = true
+    }
+    elsif $facts.dig('wazuh', 'server') != $wazuh::enrollment_server {
+      $_reauth = true
     }
   }
   else {
     $_supervise = false
+    $_reauth = false
   }
 
   $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::enrollment_server} -P ${wazuh_agent::enrollment_password}" # lint:ignore:140chars
@@ -67,8 +69,8 @@ class wazuh_agent::config {
     default     => $auth_command,
   }
 
-  if $_supervise or $wazuh_agent::reauth {
-    exec { 'reacting to a connection problem or a reauth request':
+  if $_supervise or $_reauth {
+    exec { 'reacting to a connection problem or a need to reauthenticate':
       command => '/bin/true',
       notify  => Exec['auth notify'],
     }
@@ -77,10 +79,8 @@ class wazuh_agent::config {
   exec { 'auth':
     command   => Sensitive($_auth_command),
     unless    => "/bin/egrep -q \'${wazuh_agent::agent_name}\' ${keys_file}",
-    tries     => 3,
-    try_sleep => 5,
     require   => [
-      File['ossec.conf'],
+      File[$ossec_conf_file],
       File[$keys_file],
     ],
     logoutput => true,
@@ -89,8 +89,6 @@ class wazuh_agent::config {
 
   exec { 'auth notify':
     command     => Sensitive($_auth_command),
-    tries       => 3,
-    try_sleep   => 5,
     refreshonly => true,
     logoutput   => true,
     notify      => Class['wazuh_agent::service'],
