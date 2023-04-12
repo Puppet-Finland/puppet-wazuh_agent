@@ -69,6 +69,26 @@
 # @param check_last_ack
 #   Whether to monitor time since last_ack. Default is false.
 #
+# @param rootcheck_disabled
+#   Whether to disable rootcheck. Default yes.
+#
+# @param open_scap_disabled
+#   Whether to disable rootcheck. Default yes.
+#
+# @param cis_cat_disabled
+#   Whether to disable cis-cat. Default yes. 
+#
+# @param osquery_disabled
+#  Whether to disable osquery. Default yes.
+#
+# @param syscollector_disabled
+#   Whether to disable syscollector. Default yes.
+#
+# @param syscheck_disabled
+#   Whether to disable syscheck. Default yes.
+# 
+# @param active_response_disabled
+#   Whether to disable active-response. Default yes.
 class wazuh_agent (
   String[1] $repo_name,
   String[1] $version,
@@ -89,6 +109,13 @@ class wazuh_agent (
   Boolean $check_status,
   Boolean $check_keepalive,
   Boolean $check_last_ack,
+  String $rootcheck_disabled,
+  String $open_scap_disabled,
+  String $cis_cat_disabled,
+  String $osquery_disabled,
+  String $syscollector_disabled,
+  String $syscheck_disabled,
+  String $active_response_disabled,
 ) {
   # if management_server is not set, assume single node setup
   if $management_server == undef {

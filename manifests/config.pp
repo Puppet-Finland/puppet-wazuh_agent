@@ -23,6 +23,7 @@ class wazuh_agent::config {
       owner  => 'root',
       group  => 'wazuh',
       mode   => '0640',
+      notify => Class['wazuh_agent::service'],
       ;
     $keys_file:
       ;
@@ -32,8 +33,15 @@ class wazuh_agent::config {
       ;
     $ossec_conf_file:
       content   => epp('wazuh_agent/ossec.conf.epp', {
-          'management_server'      => $wazuh_agent::_management_server,
-          'management_server_port' => $wazuh_agent::management_server_port,
+          'rootcheck_disabled'       => $wazuh_agent::rootcheck_disabled,
+          'open_scap_disabled'       => $wazuh_agent::open_scap_disabled,
+          'cis_cat_disabled'         => $wazuh_agent::cis_cat_disabled,
+          'osquery_disabled'         => $wazuh_agent::osquery_disabled,
+          'syscollector_disabled'    => $wazuh_agent::syscollector_disabled,
+          'syscheck_disabled'        => $wazuh_agent::syscheck_disabled,
+          'active_response_disabled' => $wazuh_agent::active_response_disabled,
+          'management_server'        => $wazuh_agent::_management_server,
+          'management_server_port'   => $wazuh_agent::management_server_port,
       }),
       ;
     $authd_pass_file:

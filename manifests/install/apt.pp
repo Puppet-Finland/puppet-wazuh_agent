@@ -2,6 +2,8 @@
 # @summary Apt repo
 #
 class wazuh_agent::install::apt {
+  assert_private()
+
   # wazuh is already installed, disable repo
   if $facts.dig('wazuh', 'version') {
     if ($wazuh_agent::version ==  $facts.dig('wazuh', 'version').split('-')[0]) {
@@ -45,7 +47,6 @@ class wazuh_agent::install::apt {
     package { $wazuh_agent::package_name:
       ensure  => "${wazuh_agent::version}-${wazuh_agent::revision}",
       require => [
-        Apt::Source[$wazuh_agent::repo_name],
         Class['apt::update'],
       ],
       notify  => Class['wazuh_agent::service'],

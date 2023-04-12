@@ -1,19 +1,25 @@
 <%- |
 String $management_server,
 Integer $management_server_port,
+String $rootcheck_disabled,
+String $open_scap_disabled,
+String $cis_cat_disabled,
+String $osquery_disabled,
+String $syscollector_disabled,
+String $syscheck_disabled,
+String $active_response_disabled,
 | -%>
 <ossec_config>
   <client>
     <server>
       <address><%= $management_server -%></address> 
       <port><%= $management_server_port -%></port>
-   </server>
-    <config-profile>ubuntu, ubuntu18, ubuntu18.04</config-profile>
-    <notify_time>10</notify_time>
-    <time-reconnect>60</time-reconnect>
-    <crypto_method>aes</crypto_method>
-    <auto_restart>yes</auto_restart>
-    <force_reconnect_interval>30s</force_reconnect_interval>
+     </server>
+   <notify_time>10</notify_time>
+   <time-reconnect>60</time-reconnect>
+   <crypto_method>aes</crypto_method>
+   <auto_restart>yes</auto_restart>
+   <force_reconnect_interval>30s</force_reconnect_interval>
   </client>
   <client_buffer>
     <disabled>no</disabled>
@@ -21,7 +27,7 @@ Integer $management_server_port,
     <events_per_second>500</events_per_second>
   </client_buffer>
   <rootcheck>
-    <disabled>no</disabled>
+    <disabled><%= $rootcheck_disabled -%></disabled>
     <check_files>yes</check_files>
     <check_trojans>yes</check_trojans>
     <check_dev>yes</check_dev>
@@ -35,13 +41,13 @@ Integer $management_server_port,
     <skip_nfs>yes</skip_nfs>
   </rootcheck>
   <wodle name="open-scap">
-    <disabled>yes</disabled>
+    <disabled><%= $open_scap_disabled -%></disabled>
     <timeout>1800</timeout>
     <interval>1d</interval>
     <scan-on-start>yes</scan-on-start>
   </wodle>
   <wodle name="cis-cat">
-    <disabled>yes</disabled>
+    <disabled><%= $cis_cat_disabled -%></disabled>
     <timeout>1800</timeout>
     <interval>1d</interval>
     <scan-on-start>yes</scan-on-start>
@@ -49,7 +55,7 @@ Integer $management_server_port,
     <ciscat_path>wodles/ciscat</ciscat_path>
   </wodle>
   <wodle name="osquery">
-    <disabled>yes</disabled>
+    <disabled><%= $osquery_disabled -%></disabled>
     <run_daemon>yes</run_daemon>
     <bin_path>/usr/bin/osqueryd</bin_path>
     <log_path>/var/log/osquery/osqueryd.results.log</log_path>
@@ -57,7 +63,7 @@ Integer $management_server_port,
     <add_labels>yes</add_labels>
   </wodle>
   <wodle name="syscollector">
-    <disabled>no</disabled>
+    <disabled><%= $syscollector_disabled -%></disabled>
     <interval>1h</interval>
     <scan_on_start>yes</scan_on_start>
     <hardware>yes</hardware>
@@ -69,7 +75,7 @@ Integer $management_server_port,
   </wodle>
   <!-- File integrity monitoring -->
   <syscheck>
-    <disabled>no</disabled>
+    <disabled><%= $syscheck_disabled -%></disabled>
     <frequency>43200</frequency>
     <scan_on_start>yes</scan_on_start>
     <process_priority>10</process_priority>
@@ -159,7 +165,7 @@ Integer $management_server_port,
     <frequency>360</frequency>
   </localfile>
   <active-response>
-    <disabled>no</disabled>
+    <disabled><%= $active_response_disabled -%></disabled>
     <ca_store>/var/ossec/etc/wpk_root.pem</ca_store>
     <ca_verification>yes</ca_verification>
   </active-response>

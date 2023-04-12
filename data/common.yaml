@@ -18,3 +18,11 @@ wazuh_agent::check_keepalive: false
 wazuh_agent::check_last_ack: false
 wazuh_agent::last_ack_limit: 300
 wazuh_agent::keepalive_limit: 300
+wazuh_agent::rootcheck_disabled: 'yes'
+wazuh_agent::open_scap_disabled: 'yes'
+wazuh_agent::cis_cat_disabled: 'yes'
+wazuh_agent::osquery_disabled: 'yes'
+wazuh_agent::syscollector_disabled: 'yes'
+wazuh_agent::syscheck_disabled: 'yes'
+wazuh_agent::active_response_disabled: 'yes'
+

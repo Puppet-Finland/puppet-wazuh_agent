@@ -48,7 +48,6 @@ So far minimally tested.
 
 ## TODO
 
-* Support RedHat family distros
 * Handle separate management server
 * Manage ossec.conf as fragments
 * Write rspec-puppet tests
@@ -60,7 +59,7 @@ So far minimally tested.
 * Michael Porter
 * All official Wazuh puppet module contributors.
 
-[Check out what's cooking](https://wazuh.com)
+[Check out what's cooking in Wazuh](https://wazuh.com)
 
 ## License
 

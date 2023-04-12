@@ -10,7 +10,7 @@
 * [`wazuh_agent::config`](#wazuh_agent--config): Wazuh agent configuration
 * [`wazuh_agent::install`](#wazuh_agent--install): Install Wazuh agent
 * [`wazuh_agent::install::apt`](#wazuh_agent--install--apt): Apt repo
-* [`wazuh_agent::install::yum`](#wazuh_agent--install--yum): Wazuh yum install
+* [`wazuh_agent::install::yum`](#wazuh_agent--install--yum): Wazuh agent yum install
 * [`wazuh_agent::service`](#wazuh_agent--service): Wazuh agent service
 
 ## Classes
@@ -58,6 +58,13 @@ The following parameters are available in the `wazuh_agent` class:
 * [`check_status`](#-wazuh_agent--check_status)
 * [`check_keepalive`](#-wazuh_agent--check_keepalive)
 * [`check_last_ack`](#-wazuh_agent--check_last_ack)
+* [`rootcheck_disabled`](#-wazuh_agent--rootcheck_disabled)
+* [`open_scap_disabled`](#-wazuh_agent--open_scap_disabled)
+* [`cis_cat_disabled`](#-wazuh_agent--cis_cat_disabled)
+* [`osquery_disabled`](#-wazuh_agent--osquery_disabled)
+* [`syscollector_disabled`](#-wazuh_agent--syscollector_disabled)
+* [`syscheck_disabled`](#-wazuh_agent--syscheck_disabled)
+* [`active_response_disabled`](#-wazuh_agent--active_response_disabled)
 
 ##### <a name="-wazuh_agent--version"></a>`version`
 
@@ -175,6 +182,48 @@ Data type: `Boolean`
 
 Whether to monitor time since last_ack. Default is false.
 
+##### <a name="-wazuh_agent--rootcheck_disabled"></a>`rootcheck_disabled`
+
+Data type: `String`
+
+Whether to disable rootcheck. Default yes.
+
+##### <a name="-wazuh_agent--open_scap_disabled"></a>`open_scap_disabled`
+
+Data type: `String`
+
+Whether to disable rootcheck. Default yes.
+
+##### <a name="-wazuh_agent--cis_cat_disabled"></a>`cis_cat_disabled`
+
+Data type: `String`
+
+Whether to disable cis-cat. Default yes.
+
+##### <a name="-wazuh_agent--osquery_disabled"></a>`osquery_disabled`
+
+Data type: `String`
+
+Whether to disable osquery. Default yes.
+
+##### <a name="-wazuh_agent--syscollector_disabled"></a>`syscollector_disabled`
+
+Data type: `String`
+
+Whether to disable syscollector. Default yes.
+
+##### <a name="-wazuh_agent--syscheck_disabled"></a>`syscheck_disabled`
+
+Data type: `String`
+
+Whether to disable syscheck. Default yes.
+
+##### <a name="-wazuh_agent--active_response_disabled"></a>`active_response_disabled`
+
+Data type: `String`
+
+Whether to disable active-response. Default yes.
+
 ### <a name="wazuh_agent--config"></a>`wazuh_agent::config`
 
 Configure and supervise agent
@@ -189,7 +238,7 @@ Apt repo
 
 ### <a name="wazuh_agent--install--yum"></a>`wazuh_agent::install::yum`
 
-Wazuh yum install
+Wazuh agent yum install
 
 ### <a name="wazuh_agent--service"></a>`wazuh_agent::service`
 
