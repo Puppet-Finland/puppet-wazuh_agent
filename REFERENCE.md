@@ -6,12 +6,17 @@
 
 ### Classes
 
+#### Public Classes
+
 * [`wazuh_agent`](#wazuh_agent): Manage Wazuh agent
-* [`wazuh_agent::config`](#wazuh_agent--config): Wazuh agent configuration
-* [`wazuh_agent::install`](#wazuh_agent--install): Install Wazuh agent
-* [`wazuh_agent::install::apt`](#wazuh_agent--install--apt): Apt repo
-* [`wazuh_agent::install::yum`](#wazuh_agent--install--yum): Wazuh agent yum install
-* [`wazuh_agent::service`](#wazuh_agent--service): Wazuh agent service
+
+#### Private Classes
+
+* `wazuh_agent::config`: Configure and supervise Wazuh agent
+* `wazuh_agent::install`: Install Wazuh agent
+* `wazuh_agent::install::apt`: Manage apt repo
+* `wazuh_agent::install::yum`: Manage yum repo
+* `wazuh_agent::service`: Manage Wazuh agent service
 
 ## Classes
 
@@ -223,24 +228,4 @@ Whether to disable syscheck. Default yes.
 Data type: `String`
 
 Whether to disable active-response. Default yes.
-
-### <a name="wazuh_agent--config"></a>`wazuh_agent::config`
-
-Configure and supervise agent
-
-### <a name="wazuh_agent--install"></a>`wazuh_agent::install`
-
-Install Wazuh agent
-
-### <a name="wazuh_agent--install--apt"></a>`wazuh_agent::install::apt`
-
-Apt repo
-
-### <a name="wazuh_agent--install--yum"></a>`wazuh_agent::install::yum`
-
-Wazuh agent yum install
-
-### <a name="wazuh_agent--service"></a>`wazuh_agent::service`
-
-Manage Wazuh agent service
 

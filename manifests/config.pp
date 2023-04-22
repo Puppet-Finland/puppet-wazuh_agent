@@ -1,7 +1,7 @@
 #
-# @summary Wazuh agent configuration
+# @summary Configure and supervise Wazuh agent
 #
-# Configure and supervise agent  
+# @api private
 #
 class wazuh_agent::config {
   assert_private()
@@ -79,7 +79,7 @@ class wazuh_agent::config {
   }
 
   if $_supervise or $_reauth {
-    exec { 'reacting to a connection problem or a need to reauthenticate':
+    exec { 'reacting to a connection problem or need to reauthenticate':
       command => '/bin/true',
       notify  => Exec['auth notify'],
     }

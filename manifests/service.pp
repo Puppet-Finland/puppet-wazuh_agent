@@ -1,7 +1,8 @@
-# @summary Wazuh agent service
 #
-# Manage Wazuh agent service
+# @summary Manage Wazuh agent service
 #
+# @api private
+# 
 class wazuh_agent::service {
   assert_private()
 

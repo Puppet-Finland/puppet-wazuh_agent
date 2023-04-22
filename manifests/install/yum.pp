@@ -1,22 +1,27 @@
 #
-# @summary Wazuh agent yum install
+# @summary Manage yum repo
 #
+# @api private
+# 
 class wazuh_agent::install::yum {
   assert_private()
 
-  # wazuh is already installed, disable repo (by convergence)
-
+  # wazuh is already installed
   if $facts.dig('wazuh', 'version') {
+    # version matches, disable repo with convergence 
     if ($wazuh_agent::version ==  $facts.dig('wazuh', 'version').split('-')[0]) {
-      $_yum_dir =  '/etc/yum.repos.d'
-      $_command = "mv ${_yum_dir}/${wazuh_agent::repo_name}.list ${_yum_dir}/${wazuh_agent::repo_name}.list.offline"
-      exec { 'disable yum repo':
-        path    => '/bin:/usr/bin',
-        command => $_command,
-        onlyif  => "test -e ${_yum_dir}/${wazuh_agent::repo_name}.list",
+      yumrepo { $wazuh_agent::repo_name:
+        enabled  => false,
+      }
+    }
+    # version doesn't match, enable repo
+    else {
+      yumrepo { $wazuh_agent::repo_name:
+        enabled  => true,
       }
     }
   }
+  # this is a first time install
   else {
     $gpgkey = 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
 
@@ -26,19 +31,14 @@ class wazuh_agent::install::yum {
     else {
       $baseurl = 'https://packages.wazuh.com/4.x/yum/'
     }
-  }
 
-  yumrepo { $wazuh_agent::repo_name:
-    descr    => 'WAZUH repository created by Puppet',
-    enabled  => true,
-    gpgcheck => 1,
-    gpgkey   => $gpgkey,
-    baseurl  => $baseurl,
-    before   => Package[$wazuh_agent::package_name],
-  }
-
-  package { $wazuh_agent::package_name:
-    ensure => "${wazuh_agent::version}-${wazuh_agent::revision}",
-    notify => Class['wazuh_agent::service'],
+    yumrepo { $wazuh_agent::repo_name:
+      descr    => 'WAZUH repository created by Puppet',
+      enabled  => true,
+      gpgcheck => 1,
+      gpgkey   => $gpgkey,
+      baseurl  => $baseurl,
+      before   => Package[$wazuh_agent::package_name],
+    }
   }
 }

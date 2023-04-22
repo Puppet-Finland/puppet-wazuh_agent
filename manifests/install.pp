@@ -1,6 +1,8 @@
 #
 # @summary Install Wazuh agent
 #
+# @api private
+#
 class wazuh_agent::install {
   assert_private()
 
@@ -14,5 +16,10 @@ class wazuh_agent::install {
     default: {
       fail('Unsupported OS or distribution.')
     }
+  }
+
+  package { $wazuh_agent::package_name:
+    ensure => "${wazuh_agent::version}-${wazuh_agent::revision}",
+    notify => Class['wazuh_agent::service'],
   }
 }

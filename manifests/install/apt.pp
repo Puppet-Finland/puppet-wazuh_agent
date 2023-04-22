@@ -1,21 +1,35 @@
 #
-# @summary Apt repo
+# @summary Manage apt repo
+#
+# @api private
 #
 class wazuh_agent::install::apt {
   assert_private()
 
-  # wazuh is already installed, disable repo
+  # wazuh is already installed
   if $facts.dig('wazuh', 'version') {
+    $_apt_dir =  '/etc/apt/sources.list.d'
+    $_disable_cmd = "mv ${_apt_dir}/${wazuh_agent::repo_name}.list ${_apt_dir}/${wazuh_agent::repo_name}.list.offline"
+    $_enable_cmd = "mv ${_apt_dir}/${wazuh_agent::repo_name}.list.offline ${_apt_dir}/${wazuh_agent::repo_name}.list"
+
+    # version matches, disable repo with convergence
     if ($wazuh_agent::version ==  $facts.dig('wazuh', 'version').split('-')[0]) {
-      $_apt_dir =  '/etc/apt/sources.list.d'
-      $_command = "mv ${_apt_dir}/${wazuh_agent::repo_name}.list ${_apt_dir}/${wazuh_agent::repo_name}.list.offline"
       exec { 'disable apt repo':
         path    => '/bin:/usr/bin',
-        command => $_command,
+        command => $_disable_cmd,
         onlyif  => "test -e ${_apt_dir}/${wazuh_agent::repo_name}.list",
       }
     }
+    # version doesn't match
+    else {
+      exec { 'enable apt repo':
+        path    => '/bin:/usr/bin',
+        command => $_enable_cmd,
+        onlyif  => "test -e ${_apt_dir}/${wazuh_agent::repo_name}.list.offline",
+      }
+    }
   }
+  # this is a first time install
   else {
     if (versioncmp($facts['aio_agent_version'], '7.0.0') < 0) {
       package { 'lsb-release':
@@ -43,13 +57,12 @@ class wazuh_agent::install::apt {
       },
       before   => Package[$wazuh_agent::package_name],
     }
+  }
 
-    package { $wazuh_agent::package_name:
-      ensure  => "${wazuh_agent::version}-${wazuh_agent::revision}",
-      require => [
-        Class['apt::update'],
-      ],
-      notify  => Class['wazuh_agent::service'],
-    }
+  exec { 'update apt':
+    path    => '/bin:/usr/bin',
+    command => 'apt-get update',
+    onlyif  => "test -e ${_apt_dir}/${wazuh_agent::repo_name}.list",
+    before  => Package[$wazuh_agent::package_name],
   }
 }
