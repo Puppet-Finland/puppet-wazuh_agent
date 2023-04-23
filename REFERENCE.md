@@ -13,6 +13,7 @@
 #### Private Classes
 
 * `wazuh_agent::config`: Configure and supervise Wazuh agent
+* `wazuh_agent::ensure_absent`: Completely remove wazuh agent from the system
 * `wazuh_agent::install`: Install Wazuh agent
 * `wazuh_agent::install::apt`: Manage apt repo
 * `wazuh_agent::install::yum`: Manage yum repo
@@ -70,6 +71,7 @@ The following parameters are available in the `wazuh_agent` class:
 * [`syscollector_disabled`](#-wazuh_agent--syscollector_disabled)
 * [`syscheck_disabled`](#-wazuh_agent--syscheck_disabled)
 * [`active_response_disabled`](#-wazuh_agent--active_response_disabled)
+* [`ensure_absent`](#-wazuh_agent--ensure_absent)
 
 ##### <a name="-wazuh_agent--version"></a>`version`
 
@@ -81,7 +83,7 @@ Wazuh agent version. Default 4.3.5.
 
 Data type: `String[1]`
 
-Wazuh agent revision. Default -1'
+Wazuh agent revision. Default '-1'
 
 ##### <a name="-wazuh_agent--repo_name"></a>`repo_name`
 
@@ -189,43 +191,49 @@ Whether to monitor time since last_ack. Default is false.
 
 ##### <a name="-wazuh_agent--rootcheck_disabled"></a>`rootcheck_disabled`
 
-Data type: `String`
+Data type: `Enum['yes', 'no']`
 
 Whether to disable rootcheck. Default yes.
 
 ##### <a name="-wazuh_agent--open_scap_disabled"></a>`open_scap_disabled`
 
-Data type: `String`
+Data type: `Enum['yes', 'no']`
 
 Whether to disable rootcheck. Default yes.
 
 ##### <a name="-wazuh_agent--cis_cat_disabled"></a>`cis_cat_disabled`
 
-Data type: `String`
+Data type: `Enum['yes', 'no']`
 
 Whether to disable cis-cat. Default yes.
 
 ##### <a name="-wazuh_agent--osquery_disabled"></a>`osquery_disabled`
 
-Data type: `String`
+Data type: `Enum['yes', 'no']`
 
 Whether to disable osquery. Default yes.
 
 ##### <a name="-wazuh_agent--syscollector_disabled"></a>`syscollector_disabled`
 
-Data type: `String`
+Data type: `Enum['yes', 'no']`
 
 Whether to disable syscollector. Default yes.
 
 ##### <a name="-wazuh_agent--syscheck_disabled"></a>`syscheck_disabled`
 
-Data type: `String`
+Data type: `Enum['yes', 'no']`
 
 Whether to disable syscheck. Default yes.
 
 ##### <a name="-wazuh_agent--active_response_disabled"></a>`active_response_disabled`
 
-Data type: `String`
+Data type: `Enum['yes', 'no']`
 
 Whether to disable active-response. Default yes.
+
+##### <a name="-wazuh_agent--ensure_absent"></a>`ensure_absent`
+
+Data type: `Boolean`
+
+Whether to completely remove the agent. Default false (surprise).
 

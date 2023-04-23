@@ -25,4 +25,6 @@ wazuh_agent::osquery_disabled: 'yes'
 wazuh_agent::syscollector_disabled: 'yes'
 wazuh_agent::syscheck_disabled: 'yes'
 wazuh_agent::active_response_disabled: 'yes'
+wazuh_agent::ensure_absent: false
+
 

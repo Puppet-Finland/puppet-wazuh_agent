@@ -14,7 +14,7 @@
 #   Wazuh agent version. Default 4.3.5.
 #   
 # @param revision
-#   Wazuh agent revision. Default -1'
+#   Wazuh agent revision. Default '-1'
 #   
 # @param repo_name
 #   Wazuh repository name. Default is 'wazuh-puppet'
@@ -89,6 +89,9 @@
 # 
 # @param active_response_disabled
 #   Whether to disable active-response. Default yes.
+#
+# @param ensure_absent
+#   Whether to completely remove the agent. Default false (surprise).
 class wazuh_agent (
   String[1] $repo_name,
   String[1] $version,
@@ -109,27 +112,33 @@ class wazuh_agent (
   Boolean $check_status,
   Boolean $check_keepalive,
   Boolean $check_last_ack,
-  String $rootcheck_disabled,
-  String $open_scap_disabled,
-  String $cis_cat_disabled,
-  String $osquery_disabled,
-  String $syscollector_disabled,
-  String $syscheck_disabled,
-  String $active_response_disabled,
+  Enum['yes', 'no'] $rootcheck_disabled,
+  Enum['yes', 'no'] $open_scap_disabled,
+  Enum['yes', 'no'] $cis_cat_disabled,
+  Enum['yes', 'no'] $osquery_disabled,
+  Enum['yes', 'no'] $syscollector_disabled,
+  Enum['yes', 'no'] $syscheck_disabled,
+  Enum['yes', 'no'] $active_response_disabled,
+  Boolean $ensure_absent,
 ) {
-  # if management_server is not set, assume single node setup
-  if $management_server == undef {
-    $_management_server = $enrollment_server
+  if $ensure_absent {
+    contain 'wazuh_agent::ensure_absent'
   }
   else {
-    $_management_server =  $management_server
+    # if management_server is not set, assume single node setup
+    if $management_server == undef {
+      $_management_server = $enrollment_server
+    }
+    else {
+      $_management_server = $management_server
+    }
+
+    contain 'wazuh_agent::install'
+    contain 'wazuh_agent::config'
+    contain 'wazuh_agent::service'
+
+    Class['wazuh_agent::install']
+    -> Class['wazuh_agent::config']
+    -> Class['wazuh_agent::service']
   }
-
-  contain 'wazuh_agent::install'
-  contain 'wazuh_agent::config'
-  contain 'wazuh_agent::service'
-
-  Class['wazuh_agent::install']
-  -> Class['wazuh_agent::config']
-  -> Class['wazuh_agent::service']
 }
