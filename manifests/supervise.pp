@@ -34,10 +34,9 @@ class wazuh_agent::supervise {
   }
 
   if $_supervise {
-    exec { 'supervise':
-      command   => '/bin/true',
+    exec { 'restart wazuh':
+      command   => "systemctl restart ${wazuh_agent::service_name}",
       logoutput => true,
-      notify    => Class['wazuh_agent::service'],
     }
   }
 
@@ -52,7 +51,6 @@ class wazuh_agent::supervise {
     exec { 'reauth':
       command   => Sensitive($_auth_command),
       logoutput => true,
-      notify    => Class['wazuh_agent::service'],
     }
   }
 }
