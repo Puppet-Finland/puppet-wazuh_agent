@@ -136,9 +136,11 @@ class wazuh_agent (
     contain 'wazuh_agent::install'
     contain 'wazuh_agent::config'
     contain 'wazuh_agent::service'
+    contain 'wazuh_agent::supervise'
 
     Class['wazuh_agent::install']
     -> Class['wazuh_agent::config']
     -> Class['wazuh_agent::service']
+    -> Class['wazuh_agent::supervise']
   }
 }
