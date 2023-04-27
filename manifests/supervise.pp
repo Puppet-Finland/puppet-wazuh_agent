@@ -35,6 +35,7 @@ class wazuh_agent::supervise {
 
   if $_supervise {
     exec { 'restart wazuh':
+      path      => ['/bin', '/usr/bin'],
       command   => "systemctl restart ${wazuh_agent::service_name}",
       logoutput => true,
     }
