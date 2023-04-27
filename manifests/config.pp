@@ -62,7 +62,7 @@ class wazuh_agent::config {
     elsif $facts.dig('wazuh', 'name') != $wazuh_agent::agent_name {
       $_reauth = true
     }
-    elsif $facts.dig('wazuh', 'server') != $wazuh_agent::enrollment_server {
+    elsif $facts.dig('wazuh', 'server') != $wazuh_agent::_management_server {
       $_reauth = true
     }
   }
