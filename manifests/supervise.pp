@@ -6,27 +6,41 @@
 class wazuh_agent::supervise {
   assert_private()
 
-  if $facts.dig('wazuh', 'server') {
-    if $wazuh_agent::check_status and ($facts.dig('wazuh', 'status') != 'connected') {
-      notify { 'agent disconnected': }
+  if $wazuh_agent::check_status and ($facts.dig('wazuh', 'status') != 'connected') {
+    warning('agent disconnected')
+
+    if $wazuh_agent::check_api {
+      $agent_exists = wazuh_agent::api_agent_exists(
+        $wazuh_agent::api_host,
+        $wazuh_agent::api_host_port,
+        $wazuh_agent::api_username,
+        $wazuh_agent::api_password,
+        $wazuh_agent::agent_name
+      )
+
+      if !$agent_exists {
+        $_reauth = true
+      }
+    }
+    else {
       $_supervise = true
     }
-    elsif $wazuh_agent::check_keepalive and ($facts.dig('wazuh', 'last_keepalive') > $wazuh_agent::keepalive_limit) {
-      notify { 'keepalive_limit exceeded': }
-      $_supervise = true
-    }
-    elsif $wazuh_agent::check_last_ack and ($facts.dig('wazuh', 'last_ack') > $wazuh_agent::last_ack_limit) {
-      notify { 'last_ack_limit exceeded': }
-      $_supervise = true
-    }
-    elsif $facts.dig('wazuh', 'name') != $wazuh_agent::agent_name {
-      notify { 'agent name changed': }
-      $_reauth = true
-    }
-    elsif $facts.dig('wazuh', 'server') != $wazuh_agent::_management_server {
-      notify { 'management server changed': }
-      $_reauth = true
-    }
+  }
+  elsif $wazuh_agent::check_keepalive and ($facts.dig('wazuh', 'last_keepalive') > $wazuh_agent::keepalive_limit) {
+    warning('keepalive_limit exceeded')
+    $_supervise = true
+  }
+  elsif $wazuh_agent::check_last_ack and ($facts.dig('wazuh', 'last_ack') > $wazuh_agent::last_ack_limit) {
+    warning('last_ack_limit exceeded')
+    $_supervise = true
+  }
+  elsif $facts.dig('wazuh', 'name') != $wazuh_agent::agent_name {
+    warning('agent name changed')
+    $_reauth = true
+  }
+  elsif $facts.dig('wazuh', 'server') != $wazuh_agent::_management_server {
+    warning('management server changed')
+    $_reauth = true
   }
   else {
     $_supervise = false

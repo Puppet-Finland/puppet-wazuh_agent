@@ -20,6 +20,10 @@
 * `wazuh_agent::service`: Manage Wazuh agent service
 * `wazuh_agent::supervise`: supervise Wazuh agent
 
+### Functions
+
+* [`wazuh_agent::api_agent_exists`](#wazuh_agent--api_agent_exists)
+
 ## Classes
 
 ### <a name="wazuh_agent"></a>`wazuh_agent`
@@ -36,6 +40,7 @@ Manage Wazuh agent
 ##### Basic usage
 
 ```puppet
+
 class { wazuh_agent:
   enrollment_server   => 'mywazuh.example.com',
   enrollment_password => 'created_with_enigma',
@@ -62,6 +67,11 @@ The following parameters are available in the `wazuh_agent` class:
 * [`last_ack_limit`](#-wazuh_agent--last_ack_limit)
 * [`keepalive_limit`](#-wazuh_agent--keepalive_limit)
 * [`debug`](#-wazuh_agent--debug)
+* [`check_api`](#-wazuh_agent--check_api)
+* [`api_host`](#-wazuh_agent--api_host)
+* [`api_host_port`](#-wazuh_agent--api_host_port)
+* [`api_username`](#-wazuh_agent--api_username)
+* [`api_password`](#-wazuh_agent--api_password)
 * [`check_status`](#-wazuh_agent--check_status)
 * [`check_keepalive`](#-wazuh_agent--check_keepalive)
 * [`check_last_ack`](#-wazuh_agent--check_last_ack)
@@ -172,6 +182,41 @@ Data type: `Boolean`
 
 Enable some agent side debugging. Default is false.
 
+##### <a name="-wazuh_agent--check_api"></a>`check_api`
+
+Data type: `Boolean`
+
+Whether to check if agent exists via API
+and reauthenticate if it's doesn't. Default is false.
+
+##### <a name="-wazuh_agent--api_host"></a>`api_host`
+
+Data type: `Optional[Stdlib::Host]`
+
+API host. Reguired for check_api.
+Note that this uses custom function that is
+run on the server. Measures have been taken to
+try to minimize the number of calls. The default
+limit for api calls on the server is 900/min.
+
+##### <a name="-wazuh_agent--api_host_port"></a>`api_host_port`
+
+Data type: `Optional[Stdlib::Port]`
+
+API host port. Reguired for check_api.
+
+##### <a name="-wazuh_agent--api_username"></a>`api_username`
+
+Data type: `Optional[String]`
+
+API username. Reguired for check_api.
+
+##### <a name="-wazuh_agent--api_password"></a>`api_password`
+
+Data type: `Optional[String]`
+
+API password. Reguired for check_api.
+
 ##### <a name="-wazuh_agent--check_status"></a>`check_status`
 
 Data type: `Boolean`
@@ -237,4 +282,48 @@ Whether to disable active-response. Default yes.
 Data type: `Boolean`
 
 Whether to completely remove the agent. Default false (surprise).
+
+## Functions
+
+### <a name="wazuh_agent--api_agent_exists"></a>`wazuh_agent::api_agent_exists`
+
+Type: Ruby 4.x API
+
+The wazuh_agent::api_agent_exists function.
+
+#### `wazuh_agent::api_agent_exists(String $api_host, Integer $api_host_port, String $api_username, String $api_password, String $api_agent_name)`
+
+The wazuh_agent::api_agent_exists function.
+
+Returns: `Boolean` Returns a boolean
+
+##### `api_host`
+
+Data type: `String`
+
+API host
+
+##### `api_host_port`
+
+Data type: `Integer`
+
+API host port
+
+##### `api_username`
+
+Data type: `String`
+
+API username
+
+##### `api_password`
+
+Data type: `String`
+
+API password
+
+##### `api_agent_name`
+
+Data type: `String`
+
+API agent name
 

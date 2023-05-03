@@ -1,6 +1,7 @@
 # @summary Manage Wazuh agent
 #
 # @example Basic usage
+#
 #   class { wazuh_agent:
 #     enrollment_server   => 'mywazuh.example.com',
 #     enrollment_password => 'created_with_enigma',
@@ -60,6 +61,26 @@
 # @param debug
 #   Enable some agent side debugging. Default is false.
 #
+# @param check_api
+#   Whether to check if agent exists via API
+#   and reauthenticate if it's doesn't. Default is false.
+#
+# @param api_host
+#   API host. Reguired for check_api.
+#   Note that this uses custom function that is
+#   run on the server. Measures have been taken to
+#   try to minimize the number of calls. The default
+#   limit for api calls on the server is 900/min.
+#
+# @param api_host_port
+#    API host port. Reguired for check_api. 
+#
+# @param api_username
+#    API username. Reguired for check_api.
+#
+# @param api_password
+#   API password. Reguired for check_api.
+# 
 # @param check_status
 #   Whether to monitor agent connection status. Default is true.
 #
@@ -112,6 +133,11 @@ class wazuh_agent (
   Boolean $check_status,
   Boolean $check_keepalive,
   Boolean $check_last_ack,
+  Boolean $check_api,
+  Optional[Stdlib::Host] $api_host,
+  Optional[Stdlib::Port] $api_host_port,
+  Optional[String] $api_username,
+  Optional[String] $api_password,
   Enum['yes', 'no'] $rootcheck_disabled,
   Enum['yes', 'no'] $open_scap_disabled,
   Enum['yes', 'no'] $cis_cat_disabled,
@@ -131,6 +157,13 @@ class wazuh_agent (
     }
     else {
       $_management_server = $management_server
+    }
+
+    if $check_api {
+      validate_string($api_host)
+      validate_integer($api_host_port)
+      validate_string($api_username)
+      validate_string($api_password)
     }
 
     contain 'wazuh_agent::install'

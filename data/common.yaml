@@ -16,6 +16,7 @@ wazuh_agent::reauth: false
 wazuh_agent::check_status: true
 wazuh_agent::check_keepalive: false
 wazuh_agent::check_last_ack: false
+wazuh_agent::check_api: false  
 wazuh_agent::last_ack_limit: 300
 wazuh_agent::keepalive_limit: 300
 wazuh_agent::rootcheck_disabled: 'yes'
@@ -26,5 +27,9 @@ wazuh_agent::syscollector_disabled: 'yes'
 wazuh_agent::syscheck_disabled: 'yes'
 wazuh_agent::active_response_disabled: 'yes'
 wazuh_agent::ensure_absent: false
-
+# explicit undefs
+wazuh_agent::api_host:  ~
+wazuh_agent::api_host_port:  ~
+wazuh_agent::api_username:  ~
+wazuh_agent::api_password:  ~
 
