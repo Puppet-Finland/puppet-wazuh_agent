@@ -63,7 +63,7 @@
 #
 # @param check_api
 #   Whether to check if agent exists via API
-#   and reauthenticate if it's doesn't. Default is false.
+#   and reauthenticate if it doesn't. Default is false.
 #
 # @param api_host
 #   API host. Reguired for check_api.
