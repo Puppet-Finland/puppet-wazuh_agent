@@ -19,7 +19,6 @@ String $active_response_disabled,
    <time-reconnect>60</time-reconnect>
    <crypto_method>aes</crypto_method>
    <auto_restart>yes</auto_restart>
-   <force_reconnect_interval>30s</force_reconnect_interval>
   </client>
   <client_buffer>
     <disabled>no</disabled>
