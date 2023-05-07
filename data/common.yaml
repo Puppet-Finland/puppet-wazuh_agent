@@ -4,7 +4,7 @@ wazuh_agent::management_server_port: 1514
 # explicit undef
 wazuh_agent::management_server: ~
 wazuh_agent::agent_name: "%{facts.fqdn}"
-wazuh_agent::repo_name: 'wazuh-puppet'
+wazuh_agent::repo_name: 'wazuh'
 wazuh_agent::package_name: 'wazuh-agent'
 wazuh_agent::service_name: 'wazuh-agent.service'
 wazuh_agent::service_ensure: 'running'
