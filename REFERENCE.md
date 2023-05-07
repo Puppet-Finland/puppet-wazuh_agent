@@ -90,7 +90,7 @@ Wazuh agent revision. Default '-1'
 
 Data type: `String[1]`
 
-Wazuh repository name. Default is 'wazuh-puppet'
+Wazuh repository name. Default is 'wazuh'
 
 ##### <a name="-wazuh_agent--agent_name"></a>`agent_name`
 

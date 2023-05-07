@@ -17,7 +17,7 @@
 #   Wazuh agent revision. Default '-1'
 #   
 # @param repo_name
-#   Wazuh repository name. Default is 'wazuh-puppet'
+#   Wazuh repository name. Default is 'wazuh'
 #
 # @param agent_name
 #   An arbitrary string for agent name. Default is facts[fqdn].
