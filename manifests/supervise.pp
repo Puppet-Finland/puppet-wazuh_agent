@@ -9,7 +9,7 @@ class wazuh_agent::supervise {
   if $facts.dig('wazuh', 'server') {
     if $wazuh_agent::check_status and ($facts.dig('wazuh', 'status') != 'connected') {
       notify { 'agent disconnected': }
-      $_supervise = true
+      $_reauth = true
     }
     elsif $wazuh_agent::check_keepalive and ($facts.dig('wazuh', 'last_keepalive') > $wazuh_agent::keepalive_limit) {
       notify { 'keepalive_limit exceeded': }
