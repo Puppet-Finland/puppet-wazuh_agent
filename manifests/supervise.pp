@@ -10,6 +10,7 @@ class wazuh_agent::supervise {
     if $wazuh_agent::check_status and ($facts.dig('wazuh', 'status') != 'connected') {
       notify { 'agent disconnected': }
       $_reauth = true
+      $_supervise = true
     }
     elsif $wazuh_agent::check_keepalive and ($facts.dig('wazuh', 'last_keepalive') > $wazuh_agent::keepalive_limit) {
       notify { 'keepalive_limit exceeded': }
@@ -22,23 +23,17 @@ class wazuh_agent::supervise {
     elsif $facts.dig('wazuh', 'name') != $wazuh_agent::agent_name {
       notify { 'agent name changed': }
       $_reauth = true
+      $_supervise = true
     }
     elsif $facts.dig('wazuh', 'server') != $wazuh_agent::_management_server {
       notify { 'management server changed': }
       $_reauth = true
+      $_supervise = true
     }
   }
   else {
     $_supervise = false
     $_reauth = false
-  }
-
-  if $_supervise {
-    exec { 'restart wazuh':
-      path      => ['/bin', '/usr/bin'],
-      command   => "systemctl restart ${wazuh_agent::service_name}",
-      logoutput => true,
-    }
   }
 
   $auth_command = "/var/ossec/bin/agent-auth -A ${wazuh_agent::agent_name} -m ${wazuh_agent::enrollment_server} -P ${wazuh_agent::enrollment_password}" # lint:ignore:140chars
@@ -51,6 +46,14 @@ class wazuh_agent::supervise {
   if $_reauth {
     exec { 'reauth':
       command   => Sensitive($_auth_command),
+      logoutput => true,
+    }
+  }
+
+  if $_supervise {
+    exec { 'restart wazuh':
+      path      => ['/bin', '/usr/bin'],
+      command   => "systemctl restart ${wazuh_agent::service_name}",
       logoutput => true,
     }
   }
