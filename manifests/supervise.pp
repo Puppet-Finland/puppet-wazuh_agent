@@ -52,6 +52,7 @@ class wazuh_agent::supervise {
     exec { 'reauth':
       command   => Sensitive($_auth_command),
       logoutput => true,
+      notify    => Class['wazuh_agent::service'],
     }
   }
 }
