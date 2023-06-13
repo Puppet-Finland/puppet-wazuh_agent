@@ -9,7 +9,7 @@ class wazuh_agent::config {
   $keys_file = '/var/ossec/etc/client.keys'
   $local_options_file = '/var/ossec/etc/local_internal_options.conf'
   $ossec_conf_file = '/var/ossec/etc/ossec.conf'
-  $authd_pass_file = '/var/ossec/etc/authd_pass'
+  $authd_pass_file = '/var/ossec/etc/authd.pass'
 
   $local_options_presence = $wazuh_agent::debug ? {
     true    => 'present',
