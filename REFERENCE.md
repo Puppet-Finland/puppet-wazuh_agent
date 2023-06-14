@@ -72,6 +72,7 @@ The following parameters are available in the `wazuh_agent` class:
 * [`syscheck_disabled`](#-wazuh_agent--syscheck_disabled)
 * [`active_response_disabled`](#-wazuh_agent--active_response_disabled)
 * [`ensure_absent`](#-wazuh_agent--ensure_absent)
+* [`absent_repo_files`](#-wazuh_agent--absent_repo_files)
 
 ##### <a name="-wazuh_agent--version"></a>`version`
 
@@ -236,4 +237,10 @@ Whether to disable active-response. Default yes.
 Data type: `Boolean`
 
 Whether to completely remove the agent. Default false (surprise).
+
+##### <a name="-wazuh_agent--absent_repo_files"></a>`absent_repo_files`
+
+Data type: `Array`
+
+List of repo files to ensure absent
 

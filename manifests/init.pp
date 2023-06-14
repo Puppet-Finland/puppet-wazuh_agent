@@ -92,6 +92,9 @@
 #
 # @param ensure_absent
 #   Whether to completely remove the agent. Default false (surprise).
+#
+# @param absent_repo_files
+#   List of repo files to ensure absent
 class wazuh_agent (
   String[1] $repo_name,
   String[1] $version,
@@ -120,6 +123,7 @@ class wazuh_agent (
   Enum['yes', 'no'] $syscheck_disabled,
   Enum['yes', 'no'] $active_response_disabled,
   Boolean $ensure_absent,
+  Array $absent_repo_files,
 ) {
   if $ensure_absent {
     contain 'wazuh_agent::ensure_absent'

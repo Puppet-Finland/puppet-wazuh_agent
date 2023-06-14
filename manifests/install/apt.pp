@@ -6,11 +6,19 @@
 class wazuh_agent::install::apt {
   assert_private()
 
+  $_apt_dir =  '/etc/apt/sources.list.d'
+
+  # get rid of other repo files
+  $wazuh_agent::absent_repo_files.each |String $file| {
+    file { "${_apt_dir}/${file}":
+      ensure => absent,
+    }
+  }
+
   # wazuh is already installed
   if $facts.dig('wazuh', 'version') {
-    $_apt_dir =  '/etc/apt/sources.list.d'
-    $_disable_cmd = "mv ${_apt_dir}/${wazuh_agent::repo_name}.list ${_apt_dir}/${wazuh_agent::repo_name}.list.offline"
-    $_enable_cmd = "mv ${_apt_dir}/${wazuh_agent::repo_name}.list.offline ${_apt_dir}/${wazuh_agent::repo_name}.list"
+    $_disable_cmd = "mv ${_apt_dir}/${wazuh_agent::repo_name}.list ${_apt_dir}/.${wazuh_agent::repo_name}.list"
+    $_enable_cmd = "mv ${_apt_dir}/.${wazuh_agent::repo_name}.list ${_apt_dir}/${wazuh_agent::repo_name}.list"
 
     # version matches, disable repo with convergence
     if ($wazuh_agent::version ==  $facts.dig('wazuh', 'version').split('-')[0]) {
@@ -25,7 +33,7 @@ class wazuh_agent::install::apt {
       exec { 'enable apt repo':
         path    => '/bin:/usr/bin',
         command => $_enable_cmd,
-        onlyif  => "test -e ${_apt_dir}/${wazuh_agent::repo_name}.list.offline",
+        onlyif  => "test -e ${_apt_dir}/.${wazuh_agent::repo_name}.list",
       }
     }
   }
