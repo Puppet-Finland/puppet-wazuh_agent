@@ -3,13 +3,11 @@
 ## Table of Contents
 
 1. [Description](#description)
-1. [Setup - The basics of getting started with wazuh_agent](#setup)
-    * [What wazuh_agent affects](#what-wazuh_agent-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with wazuh_agent](#beginning-with-wazuh_agent)
 1. [Usage - Configuration options and additional functionality](#usage)
+1. [Branches](#branches)
 1. [Limitations - OS compatibility, etc.](#limitations)
-1. [Development - Guide for contributing to the module](#development)
+1. [TODO](#todo)
+1. [License](#license)
 
 ## Description
 
@@ -36,19 +34,21 @@ To learn more about Wazuh, visit [their website](https://wazuh.com)
 
 ## Branches
 
-* ```master``` contains the latest code with more hiccups
-* ```tagged branches``` contain the code with less hiccups
+* ```master``` contains the latest code with more problems
+* ```tagged branches``` contain the code with less problems
 
 ## Limitations
 
 Only supports the Wazuh agent, not the server. The server side is frequently run
 on Kubernetes and the likes. 
 
+Only Linux and osfamily RedHat and Debian supported for now.
+
 So far minimally tested. 
 
 ## TODO
 
-* Handle separate management server
+* Fix disabling Debian repo
 * Manage ossec.conf as fragments
 * Write rspec-puppet tests
 

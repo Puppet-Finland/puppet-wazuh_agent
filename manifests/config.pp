@@ -65,4 +65,29 @@ class wazuh_agent::config {
     ],
     notify  => Class['wazuh_agent::service'],
   }
+
+  if $facts.dig('wazuh', 'server') {
+    if $wazuh_agent::check_status and ($facts.dig('wazuh', 'status') != 'connected') {
+      warning('agent disconnected')
+      exec { 'reauth':
+        command   => Sensitive($_auth_command),
+        logoutput => on_failure,
+        notify    => Class['wazuh_agent::service'],
+      }
+    }
+    elsif $wazuh_agent::check_keepalive and ($facts.dig('wazuh', 'last_keepalive') > $wazuh_agent::keepalive_limit) {
+      warning('keepalive_limit exceeded')
+      notify { 'refresh service':
+        message => 'Keepalive limit exceeded. Refreshing Wazuh agent service.',
+        notify  => Class['wazuh_agent::service'],
+      }
+    }
+    elsif $wazuh_agent::check_last_ack and ($facts.dig('wazuh', 'last_ack') > $wazuh_agent::last_ack_limit) {
+      warning('last_ack_limit exceeded')
+      notify { 'refresh service':
+        message => 'Last ack limit exceeded. Refreshing Wazuh agent service.',
+        notify  => Class['wazuh_agent::service'],
+      }
+    }
+  }
 }

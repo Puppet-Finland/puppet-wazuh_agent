@@ -18,7 +18,6 @@
 * `wazuh_agent::install::apt`: Manage apt repo
 * `wazuh_agent::install::yum`: Manage yum repo
 * `wazuh_agent::service`: Manage Wazuh agent service
-* `wazuh_agent::supervise`: supervise Wazuh agent
 
 ## Classes
 
