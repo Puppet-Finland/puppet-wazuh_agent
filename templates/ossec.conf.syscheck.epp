@@ -1,0 +1,72 @@
+<%- |
+String $syscheck_disabled,
+Integer $syscheck_frequency,
+String $syscheck_scan_on_start,
+String $syscheck_synchronization_enabled,
+Integer $syscheck_synchronization_interval,
+Integer $syscheck_synchronization_max_interval,
+Integer $syscheck_synchronization_max_eps,
+Array $syscheck_dirs_full,
+Array $syscheck_dirs_ignore,
+Array $syscheck_types_ignore,
+String $syscheck_skip_nfs,
+String $syscheck_skip_dev,
+String $syscheck_skip_proc,
+String $syscheck_skip_sys,
+Integer $syscheck_max_eps,
+Integer $syscheck_nice_value,
+| -%>
+  <!-- File integrity monitoring -->
+  <syscheck>
+    <%- if $syscheck_disabled { -%>
+    <disabled><%= $syscheck_disabled %></disabled>
+    <%- } -%>
+    <%- if $syscheck_frequency { -%>
+    <frequency><%= $syscheck_frequency -%></frequency>
+    <%- } -%>
+    <%- if $syscheck_scan_on_start { -%>
+    <scan_on_start><%= $syscheck_scan_on_start %></scan_on_start>
+    <%- } -%>
+    <!-- Database synchronization settings -->
+    <synchronization>
+      <%- if $syscheck_synchronization_enabled { -%>
+      <enabled><%= $syscheck_synchronization_enabled -%></enabled>
+      <%- } -%>
+      <%- if $syscheck_synchronization_interval { -%>
+      <interval><%= $syscheck_synchronization_interval %></interval>
+      <%- } -%>
+      <%- if $syscheck_synchronization_max_interval { -%>
+      <max_interval><%= $syscheck_synchronization_max_interval %></max_interval>
+      <%- } -%>
+      <%- if $syscheck_synchronization_max_eps { -%>
+      <max_eps><%= $syscheck_synchronization_max_eps -%></max_eps>
+      <%- } -%>
+    </synchronization>
+    <%- if $kernel == 'Linux' { -%>
+    <!-- Linux files and directories -->
+    <!-- Directories to check  (perform all possible verifications) -->
+    <%- $syscheck_dirs_full.flatten.each |$dir| { -%>
+    <directories check_all="yes"><%= $dir %></directories>
+    <%- } -%>
+    <!-- Files/directories to ignore -->
+    <%- $syscheck_dirs_ignore.flatten.each |$dir| { -%>
+    <ignore><%= $dir %></ignore>
+    <%- } -%>
+    <!-- File types to ignore -->
+    <%- $syscheck_types_ignore.flatten.each |$type| { -%>
+    <ignore type="sregex"><%= $type %></ignore>
+    <%- } -%>
+    <!-- Check the file, but never compute the diff -->
+    <%- $syscheck_dirs_nodiff.flatten.each |$dir| { -%>
+    <nodiff><%= $dir %></nodiff>
+    <%- } -%>
+    <skip_nfs><%= $syscheck_skip_nfs %></skip_nfs>
+    <skip_dev><%= $syscheck_skip_dev %></skip_dev>
+    <skip_proc><%= $syscheck_skip_proc %></skip_proc>
+    <skip_sys><%= $syscheck_skip_sys %></skip_sys>
+    <!-- Nice value for Syscheck process -->
+    <process_priority><%= $syscheck_nice_value %></process_priority>
+    <!-- Maximum output throughpxsxut -->
+    <max_eps><%= $syscheck_max_eps %></max_eps>
+  <%- } -%>    
+  </syscheck>

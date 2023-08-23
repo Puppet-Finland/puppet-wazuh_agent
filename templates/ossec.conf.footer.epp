@@ -1,0 +1,8 @@
+<%- |
+String $footer_message
+| -%>
+</ossec_config>
+<%= $footer_message %>
+
+
+

@@ -14,7 +14,7 @@
 This is a simple and straightforward module to set up and manage Wazuh
 agent. No server side is and will not be supported.
 
-The assumption is that the agent side is only minimally set up and kept running. The server side will provide configuration remotely by using the agent.conf file.
+The assumption was/is that the agent side is only minimally set up and kept running. The server side will provide configuration remotely by using the agent.conf file.
 
 The drive behind this module was to have one for just the agent side, and keep it lean and mean with a simple and opinionated structure, as well as provide sensible defaults.
 
@@ -35,22 +35,19 @@ To learn more about Wazuh, visit [their website](https://wazuh.com)
 ## Branches
 
 * ```master``` contains the latest code with more problems
-* ```tagged branches``` contain the code with less problems
+* ```tagged branches``` contain the code with hopefullyless problems
 
 ## Limitations
 
 Only supports the Wazuh agent, not the server. The server side is frequently run
-on Kubernetes and the likes. 
+on Kubernetes and the likes.
 
 Only Linux and osfamily RedHat and Debian supported for now.
 
-So far minimally tested. 
-
 ## TODO
 
-* Fix disabling Debian repo
-* Manage ossec.conf as fragments
 * Write rspec-puppet tests
+* More fragments for wazuh features
 
 ## Credits
 

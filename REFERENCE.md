@@ -32,7 +32,7 @@ Manage Wazuh agent
 
 #### Examples
 
-##### Basic usage
+##### Basic usage:
 
 ```puppet
 class { wazuh_agent:
@@ -69,9 +69,24 @@ The following parameters are available in the `wazuh_agent` class:
 * [`cis_cat_disabled`](#-wazuh_agent--cis_cat_disabled)
 * [`osquery_disabled`](#-wazuh_agent--osquery_disabled)
 * [`syscollector_disabled`](#-wazuh_agent--syscollector_disabled)
-* [`syscheck_disabled`](#-wazuh_agent--syscheck_disabled)
 * [`active_response_disabled`](#-wazuh_agent--active_response_disabled)
 * [`ensure_absent`](#-wazuh_agent--ensure_absent)
+* [`syscheck_disabled`](#-wazuh_agent--syscheck_disabled)
+* [`syscheck_frequency`](#-wazuh_agent--syscheck_frequency)
+* [`syscheck_scan_on_start`](#-wazuh_agent--syscheck_scan_on_start)
+* [`syscheck_synchronization_enabled`](#-wazuh_agent--syscheck_synchronization_enabled)
+* [`syscheck_synchronization_interval`](#-wazuh_agent--syscheck_synchronization_interval)
+* [`syscheck_synchronization_max_interval`](#-wazuh_agent--syscheck_synchronization_max_interval)
+* [`syscheck_synchronization_max_eps`](#-wazuh_agent--syscheck_synchronization_max_eps)
+* [`syscheck_dirs_full`](#-wazuh_agent--syscheck_dirs_full)
+* [`syscheck_dirs_ignore`](#-wazuh_agent--syscheck_dirs_ignore)
+* [`syscheck_types_ignore`](#-wazuh_agent--syscheck_types_ignore)
+* [`syscheck_skip_nfs`](#-wazuh_agent--syscheck_skip_nfs)
+* [`syscheck_skip_dev`](#-wazuh_agent--syscheck_skip_dev)
+* [`syscheck_skip_proc`](#-wazuh_agent--syscheck_skip_proc)
+* [`syscheck_skip_sys`](#-wazuh_agent--syscheck_skip_sys)
+* [`syscheck_max_eps`](#-wazuh_agent--syscheck_max_eps)
+* [`syscheck_nice_value`](#-wazuh_agent--syscheck_nice_value)
 
 ##### <a name="-wazuh_agent--version"></a>`version`
 
@@ -219,12 +234,6 @@ Data type: `Enum['yes', 'no']`
 
 Whether to disable syscollector. Default yes.
 
-##### <a name="-wazuh_agent--syscheck_disabled"></a>`syscheck_disabled`
-
-Data type: `Enum['yes', 'no']`
-
-Whether to disable syscheck. Default yes.
-
 ##### <a name="-wazuh_agent--active_response_disabled"></a>`active_response_disabled`
 
 Data type: `Enum['yes', 'no']`
@@ -236,4 +245,100 @@ Whether to disable active-response. Default yes.
 Data type: `Boolean`
 
 Whether to completely remove the agent. Default false (surprise).
+
+##### <a name="-wazuh_agent--syscheck_disabled"></a>`syscheck_disabled`
+
+Data type: `Enum['yes', 'no']`
+
+Whether to disable syscheck. Default yes.
+
+##### <a name="-wazuh_agent--syscheck_frequency"></a>`syscheck_frequency`
+
+Data type: `Integer[0]`
+
+Frequency that the syscheck will be run. Given in seconds. Check data for defaults.
+
+##### <a name="-wazuh_agent--syscheck_scan_on_start"></a>`syscheck_scan_on_start`
+
+Data type: `Enum['yes', 'no']`
+
+Start scan on agent start. Default yes.
+
+##### <a name="-wazuh_agent--syscheck_synchronization_enabled"></a>`syscheck_synchronization_enabled`
+
+Data type: `Enum['yes', 'no']`
+
+whether there will be periodic inventory synchronizations. Default yes.
+
+##### <a name="-wazuh_agent--syscheck_synchronization_interval"></a>`syscheck_synchronization_interval`
+
+Data type: `Integer[0]`
+
+Initial number of seconds between every inventory synchronization. Check data for defaults.
+
+##### <a name="-wazuh_agent--syscheck_synchronization_max_interval"></a>`syscheck_synchronization_max_interval`
+
+Data type: `Intege[0]`
+
+maximum number of seconds between every inventory synchronization. Check data for defaults.
+
+##### <a name="-wazuh_agent--syscheck_synchronization_max_eps"></a>`syscheck_synchronization_max_eps`
+
+Data type: `Integer[0]`
+
+maximum synchronization message throughput. Check data for defaults.
+
+##### <a name="-wazuh_agent--syscheck_dirs_full"></a>`syscheck_dirs_full`
+
+Data type: `Array[String, 1]`
+
+Array of direcories to "check_all". Cehck data for Defaults..
+
+##### <a name="-wazuh_agent--syscheck_dirs_ignore"></a>`syscheck_dirs_ignore`
+
+Data type: `Array[String, 1]`
+
+List of files or directories to be ignored. Check data for defaults.
+
+##### <a name="-wazuh_agent--syscheck_types_ignore"></a>`syscheck_types_ignore`
+
+Data type: `Array[String, 1]`
+
+List of regex patterns to ignore. Check data for defaults.
+
+##### <a name="-wazuh_agent--syscheck_skip_nfs"></a>`syscheck_skip_nfs`
+
+Data type: `Enum['yes', 'no']`
+
+Specifies if syscheck should skip network mounted filesystems. Default yes.
+
+##### <a name="-wazuh_agent--syscheck_skip_dev"></a>`syscheck_skip_dev`
+
+Data type: `Enum['yes', 'no']`
+
+Specifies if syscheck should skip /dev directory. Default yes.
+
+##### <a name="-wazuh_agent--syscheck_skip_proc"></a>`syscheck_skip_proc`
+
+Data type: `Enum['yes', 'no']`
+
+Specifies if syscheck should skip /proc directory. Default yes.
+
+##### <a name="-wazuh_agent--syscheck_skip_sys"></a>`syscheck_skip_sys`
+
+Data type: `Enum['yes', 'no']`
+
+Specifies if syscheck should skip /sys directory. Default yes.
+
+##### <a name="-wazuh_agent--syscheck_max_eps"></a>`syscheck_max_eps`
+
+Data type: `Integer[0]`
+
+Maximum event reporting throughput. Check data for defaults
+
+##### <a name="-wazuh_agent--syscheck_nice_value"></a>`syscheck_nice_value`
+
+Data type: `Integer[0]`
+
+Sets the nice value for Syscheck process. Default 10.
 

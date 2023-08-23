@@ -1,0 +1,5 @@
+<%- |
+String $header_message
+| -%>
+<%= $header_message %>
+<ossec_config>

@@ -23,8 +23,41 @@ wazuh_agent::open_scap_disabled: 'yes'
 wazuh_agent::cis_cat_disabled: 'yes'
 wazuh_agent::osquery_disabled: 'yes'
 wazuh_agent::syscollector_disabled: 'yes'
-wazuh_agent::syscheck_disabled: 'yes'
 wazuh_agent::active_response_disabled: 'yes'
 wazuh_agent::ensure_absent: false
-
-
+wazuh_agent::syscheck_disabled: 'yes'
+wazuh_agent::syscheck_frequency: 43200
+wazuh_agent::syscheck_scan_on_start: 'yes'
+wazuh_agent::syscheck_synchronization_enabled: 'yes'
+wazuh_agent::syscheck_synchronization_interval: 300
+wazuh_agent::syscheck_synchronization_max_interval: 3600
+wazuh_agent::syscheck_synchronization_max_eps: 10
+wazuh_agent::syscheck_dirs_full:
+  - /etc
+  - /usr/bin
+  - /usr/sbin
+  - /bin
+  - /sbin
+  - /boot
+wazuh_agent::syscheck_dirs_ignore:
+  - /etc/mtab
+  - /etc/hosts.deny
+  - /etc/mail/statistics
+  - /etc/random-seed
+  - /etc/random.seed
+  - /etc/adjtime
+  - /etc/httpd/logs
+  - /etc/utmpx
+  - /etc/wtmpx
+  - /etc/cups/certs
+  - /etc/dumpdates
+  - /etc/svc/volatile
+wazuh_agent::syscheck_types_ignore:
+  - '.log$'
+  - '.swp$'
+wazuh_agent::syscheck_skip_nfs: 'yes'
+wazuh_agent::syscheck_skip_dev: 'yes'
+wazuh_agent::syscheck_skip_proc: 'yes'
+wazuh_agent::syscheck_skip_sys: 'yes'
+wazuh_agent::syscheck_max_eps: 10
+wazuh_agent::syscheck_nice_value: 10

@@ -1,6 +1,6 @@
 # @summary Manage Wazuh agent
 #
-# @example Basic usage
+# @example Basic usage:
 #   class { wazuh_agent:
 #     enrollment_server   => 'mywazuh.example.com',
 #     enrollment_password => 'created_with_enigma',
@@ -84,14 +84,59 @@
 # @param syscollector_disabled
 #   Whether to disable syscollector. Default yes.
 #
-# @param syscheck_disabled
-#   Whether to disable syscheck. Default yes.
-# 
 # @param active_response_disabled
 #   Whether to disable active-response. Default yes.
 #
 # @param ensure_absent
 #   Whether to completely remove the agent. Default false (surprise).
+#
+# @param syscheck_disabled
+#    Whether to disable syscheck. Default yes.
+#
+# @param syscheck_frequency
+#    Frequency that the syscheck will be run. Given in seconds. Check data for defaults.
+#
+# @param syscheck_scan_on_start
+#    Start scan on agent start. Default yes.
+#
+# @param syscheck_synchronization_enabled
+#    whether there will be periodic inventory synchronizations. Default yes.
+#
+# @param syscheck_synchronization_interval
+#   Initial number of seconds between every inventory synchronization. Check data for defaults.
+#
+# @param syscheck_synchronization_max_interval
+#    maximum number of seconds between every inventory synchronization. Check data for defaults.
+#
+# @param syscheck_synchronization_max_eps
+#    maximum synchronization message throughput. Check data for defaults.
+#
+# @param syscheck_dirs_full
+#    Array of direcories to "check_all". Cehck data for Defaults..
+#
+# @param syscheck_dirs_ignore
+#    List of files or directories to be ignored. Check data for defaults.
+#
+# @param syscheck_types_ignore
+#    List of regex patterns to ignore. Check data for defaults.
+#
+# @param syscheck_skip_nfs
+#    Specifies if syscheck should skip network mounted filesystems. Default yes.   
+#
+# @param syscheck_skip_dev
+#   Specifies if syscheck should skip /dev directory. Default yes.
+#
+# @param syscheck_skip_proc
+#    Specifies if syscheck should skip /proc directory. Default yes.   
+#
+# @param syscheck_skip_sys
+#    Specifies if syscheck should skip /sys directory. Default yes.   
+#
+# @param syscheck_max_eps
+#     Maximum event reporting throughput. Check data for defaults
+#
+# @param syscheck_nice_value
+#    Sets the nice value for Syscheck process. Default 10.
 class wazuh_agent (
   String[1] $repo_name,
   String[1] $version,
@@ -117,9 +162,25 @@ class wazuh_agent (
   Enum['yes', 'no'] $cis_cat_disabled,
   Enum['yes', 'no'] $osquery_disabled,
   Enum['yes', 'no'] $syscollector_disabled,
-  Enum['yes', 'no'] $syscheck_disabled,
   Enum['yes', 'no'] $active_response_disabled,
   Boolean $ensure_absent,
+  # syscheck
+  Enum['yes', 'no'] $syscheck_disabled,
+  Integer[0] $syscheck_frequency,
+  Enum['yes', 'no'] $syscheck_scan_on_start,
+  Enum['yes', 'no'] $syscheck_synchronization_enabled,
+  Integer[0] $syscheck_synchronization_interval,
+  Intege[0] $syscheck_synchronization_max_interval,
+  Integer[0] $syscheck_synchronization_max_eps,
+  Array[String, 1] $syscheck_dirs_full,
+  Array[String, 1] $syscheck_dirs_ignore,
+  Array[String, 1] $syscheck_types_ignore,
+  Enum['yes', 'no'] $syscheck_skip_nfs,
+  Enum['yes', 'no'] $syscheck_skip_dev,
+  Enum['yes', 'no'] $syscheck_skip_proc,
+  Enum['yes', 'no'] $syscheck_skip_sys,
+  Integer[0] $syscheck_max_eps,
+  Integer[0] $syscheck_nice_value,
 ) {
   if $ensure_absent {
     contain 'wazuh_agent::ensure_absent'
