@@ -19,11 +19,12 @@ class wazuh_agent::config {
 
   file {
     default:
-      ensure => 'file',
-      owner  => 'root',
-      group  => 'wazuh',
-      mode   => '0640',
-      notify => Class['wazuh_agent::service'],
+      ensure    => 'file',
+      owner     => 'root',
+      group     => 'wazuh',
+      mode      => '0640',
+      show_diff => false,
+      notify    => Class['wazuh_agent::service'],
       ;
     $keys_file:
       ;
@@ -33,6 +34,7 @@ class wazuh_agent::config {
       ;
     $authd_pass_file:
       content => $wazuh_agent::enrollment_password,
+      notify  => Exec['auth'],
       ;
   }
 
@@ -112,33 +114,37 @@ class wazuh_agent::config {
     default     => $auth_command,
   }
 
+  # auth if passphrase file changed
   exec { 'auth':
+    command     => Sensitive($_auth_command),
+    refreshonly => true,
+    logoutput   => on_failure,
+    notify      => Class['wazuh_agent::service'],
+  }
+
+  # reauth if agent name changed
+  exec { 'reauth':
     command => Sensitive($_auth_command),
     unless  => "/bin/egrep -q \'${wazuh_agent::agent_name}\' ${keys_file}",
-    require => [
-      Concat['ossec.conf'],
-      File[$keys_file],
-    ],
     notify  => Class['wazuh_agent::service'],
   }
 
-  if $facts.dig('wazuh', 'server') {
-    if $wazuh_agent::check_status and ($facts.dig('wazuh', 'status') != 'connected') {
+  if $facts.dig('wazuh', 'state') {
+    if $wazuh_agent::check_status and ($facts.dig('wazuh', 'state', 'status') != 'connected') {
       warning('agent disconnected')
-      exec { 'reauth':
-        command   => Sensitive($_auth_command),
-        logoutput => on_failure,
-        notify    => Class['wazuh_agent::service'],
+      notify { 'refresh service':
+        message => 'Agent disconnected. Refreshing Wazuh agent service.',
+        notify  => Class['wazuh_agent::service'],
       }
     }
-    elsif $wazuh_agent::check_keepalive and ($facts.dig('wazuh', 'last_keepalive') > $wazuh_agent::keepalive_limit) {
+    elsif $wazuh_agent::check_keepalive and ($facts.dig('wazuh', 'state', 'last_keepalive') > $wazuh_agent::keepalive_limit) {
       warning('keepalive_limit exceeded')
       notify { 'refresh service':
         message => 'Keepalive limit exceeded. Refreshing Wazuh agent service.',
         notify  => Class['wazuh_agent::service'],
       }
     }
-    elsif $wazuh_agent::check_last_ack and ($facts.dig('wazuh', 'last_ack') > $wazuh_agent::last_ack_limit) {
+    elsif $wazuh_agent::check_last_ack and ($facts.dig('wazuh', 'state', 'last_ack_since') > $wazuh_agent::last_ack_limit) {
       warning('last_ack_limit exceeded')
       notify { 'refresh service':
         message => 'Last ack limit exceeded. Refreshing Wazuh agent service.',
