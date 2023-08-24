@@ -170,7 +170,7 @@ class wazuh_agent (
   Enum['yes', 'no'] $syscheck_scan_on_start,
   Enum['yes', 'no'] $syscheck_synchronization_enabled,
   Integer[0] $syscheck_synchronization_interval,
-  Intege[0] $syscheck_synchronization_max_interval,
+  Integer[0] $syscheck_synchronization_max_interval,
   Integer[0] $syscheck_synchronization_max_eps,
   Array[String, 1] $syscheck_dirs_full,
   Array[String, 1] $syscheck_dirs_ignore,
