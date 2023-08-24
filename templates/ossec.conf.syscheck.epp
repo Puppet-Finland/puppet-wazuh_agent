@@ -7,6 +7,7 @@ Integer $syscheck_synchronization_interval,
 Integer $syscheck_synchronization_max_interval,
 Integer $syscheck_synchronization_max_eps,
 Array $syscheck_dirs_full,
+Array $syscheck_text_files,
 Array $syscheck_dirs_ignore,
 Array $syscheck_types_ignore,
 String $syscheck_skip_nfs,
@@ -44,9 +45,13 @@ Integer $syscheck_nice_value,
     </synchronization>
     <%- if $kernel == 'Linux' { -%>
     <!-- Linux files and directories -->
-    <!-- Directories to check  (perform all possible verifications) -->
+    <!-- Directories to check possible verifications, real time -->
     <%- $syscheck_dirs_full.flatten.each |$dir| { -%>
-    <directories check_all="yes"><%= $dir %></directories>
+    <directories check_all="yes" realtime="yes"><%= $dir %></directories>
+    <%- } -%>
+    <!-- Text files to check and report diffs -->
+    <%- $syscheck_text_files.flatten.each |$dir| { -%>
+    <directories check_all="yes" report_changes="yes"><%= $dir %></directories>
     <%- } -%>
     <!-- Files/directories to ignore -->
     <%- $syscheck_dirs_ignore.flatten.each |$dir| { -%>

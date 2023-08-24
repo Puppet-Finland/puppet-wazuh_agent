@@ -83,6 +83,7 @@ class wazuh_agent::config {
             'syscheck_synchronization_max_interval' => $wazuh_agent::syscheck_synchronization_max_interval,
             'syscheck_synchronization_max_eps'      => $wazuh_agent::syscheck_synchronization_max_eps,
             'syscheck_dirs_full'                    => $wazuh_agent::syscheck_dirs_full,
+            'syscheck_text_files'                   => $wazuh_agent::syscheck_text_files,
             'syscheck_dirs_ignore'                  => $wazuh_agent::syscheck_dirs_ignore,
             'syscheck_types_ignore'                 => $wazuh_agent::syscheck_types_ignore,
             'syscheck_skip_nfs'                     => $wazuh_agent::syscheck_skip_nfs,

@@ -112,7 +112,10 @@
 #    maximum synchronization message throughput. Check data for defaults.
 #
 # @param syscheck_dirs_full
-#    Array of direcories to "check_all". Cehck data for Defaults..
+#    Array of direcories to "check_all". Check data for Defaults..
+#
+# @param syscheck_text_files
+#    Array of text files to report diffs. Check data for Defaults..
 #
 # @param syscheck_dirs_ignore
 #    List of files or directories to be ignored. Check data for defaults.
@@ -181,6 +184,7 @@ class wazuh_agent (
   Enum['yes', 'no'] $syscheck_skip_sys,
   Integer[0] $syscheck_max_eps,
   Integer[0] $syscheck_nice_value,
+  Array[String, 1] $syscheck_text_files,
 ) {
   if $ensure_absent {
     contain 'wazuh_agent::ensure_absent'

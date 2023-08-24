@@ -39,6 +39,11 @@ wazuh_agent::syscheck_dirs_full:
   - /bin
   - /sbin
   - /boot
+wazuh_agent::syscheck_text_files:
+  - /etc/passwd
+  - /etc/group
+  - /etc/sudoers
+  - /etc/hosts.allow
 wazuh_agent::syscheck_dirs_ignore:
   - /etc/mtab
   - /etc/hosts.deny

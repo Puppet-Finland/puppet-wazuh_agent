@@ -79,6 +79,7 @@ The following parameters are available in the `wazuh_agent` class:
 * [`syscheck_synchronization_max_interval`](#-wazuh_agent--syscheck_synchronization_max_interval)
 * [`syscheck_synchronization_max_eps`](#-wazuh_agent--syscheck_synchronization_max_eps)
 * [`syscheck_dirs_full`](#-wazuh_agent--syscheck_dirs_full)
+* [`syscheck_text_files`](#-wazuh_agent--syscheck_text_files)
 * [`syscheck_dirs_ignore`](#-wazuh_agent--syscheck_dirs_ignore)
 * [`syscheck_types_ignore`](#-wazuh_agent--syscheck_types_ignore)
 * [`syscheck_skip_nfs`](#-wazuh_agent--syscheck_skip_nfs)
@@ -278,7 +279,7 @@ Initial number of seconds between every inventory synchronization. Check data fo
 
 ##### <a name="-wazuh_agent--syscheck_synchronization_max_interval"></a>`syscheck_synchronization_max_interval`
 
-Data type: `Intege[0]`
+Data type: `Integer[0]`
 
 maximum number of seconds between every inventory synchronization. Check data for defaults.
 
@@ -292,7 +293,13 @@ maximum synchronization message throughput. Check data for defaults.
 
 Data type: `Array[String, 1]`
 
-Array of direcories to "check_all". Cehck data for Defaults..
+Array of direcories to "check_all". Check data for Defaults..
+
+##### <a name="-wazuh_agent--syscheck_text_files"></a>`syscheck_text_files`
+
+Data type: `Array[String, 1]`
+
+Array of text files to report diffs. Check data for Defaults..
 
 ##### <a name="-wazuh_agent--syscheck_dirs_ignore"></a>`syscheck_dirs_ignore`
 
