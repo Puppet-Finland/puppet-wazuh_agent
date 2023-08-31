@@ -42,6 +42,9 @@ To learn more about Wazuh, visit [their website](https://wazuh.com)
 Only supports the Wazuh agent, not the server. The server side is frequently run
 on Kubernetes and the likes.
 
+This module does NOT set up auditd. If you want file integrity monitoring with whodata,
+install it on your systems.
+
 Only Linux and osfamily RedHat and Debian supported for now.
 
 ## TODO
