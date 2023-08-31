@@ -47,7 +47,7 @@ Integer $syscheck_nice_value,
     <!-- Linux files and directories -->
     <!-- Directories to check possible verifications, real time -->
     <%- $syscheck_dirs_full.flatten.each |$dir| { -%>
-    <directories check_all="yes" realtime="yes"><%= $dir %></directories>
+    <directories check_all="yes" realtime="yes" whodata="yes"><%= $dir %></directories>
     <%- } -%>
     <!-- Text files to check and report diffs -->
     <%- $syscheck_text_files.flatten.each |$dir| { -%>
@@ -71,7 +71,7 @@ Integer $syscheck_nice_value,
     <skip_sys><%= $syscheck_skip_sys %></skip_sys>
     <!-- Nice value for Syscheck process -->
     <process_priority><%= $syscheck_nice_value %></process_priority>
-    <!-- Maximum output throughpxsxut -->
+    <!-- Maximum output throughput -->
     <max_eps><%= $syscheck_max_eps %></max_eps>
   <%- } -%>    
   </syscheck>
