@@ -1,4 +1,13 @@
 ---
+lookup_options:
+  wazuh_agent::syscheck_dirs_ignore:
+    merge: unique
+  wazuh_agent::syscheck_dirs_full:
+    merge: unique
+  wazuh_agent::syscheck_text_files::
+    merge: unique
+  wazuh_agent::syscheck_types_ignore:
+    merge: unique
 wazuh_agent::enrollment_server_port: 1515
 wazuh_agent::management_server_port: 1514
 # explicit undef
