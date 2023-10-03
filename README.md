@@ -32,10 +32,21 @@ To learn more about Wazuh, visit [their website](https://wazuh.com)
   }
 ```
 
+### File Integrity Monitoring
+
+Lookup_options are implemented on a module data level. If you want to add more targets, or exclude more than the defaults, add arrays to parameters:
+
+wazuh_agent::syscheck_dirs_ignore:
+wazuh_agent::syscheck_dirs_full:
+wazuh_agent::syscheck_text_files:
+wazuh_agent::syscheck_types_ignore:
+
+in your hiera data files. They will be uniquely merged with the defaults.
+
 ## Branches
 
 * ```master``` contains the latest code with more problems
-* ```tagged branches``` contain the code with hopefullyless problems
+* ```tagged branches``` contain the code with hopefully less problems
 
 ## Limitations
 
